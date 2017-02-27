@@ -27,3 +27,11 @@
 - 결론은 mlc로 16기가 구매하기
 - Sandisk micro sd extreme 16GB 구매
 - 샌디스크 16기가가 대부분 품절이라 (http://www.wemakeprice.com/deal/adeal/1343369/?utm_source=naver_ep&utm_medium=PRICE_af&utm_campaign=1343369&src=text&kw=02413D) 에서 32기가 구매. (5번 32GB 무료배송)
+
+# 라즈베리파이 운영체제 선택
+- Android things, Ubuntu Mate, Raspbian 등이 있는 것 같음
+- GUI쪽에 특별히 신경쓸게 아니라면 뭘 쓰던 상관 없는 것 같고 공식으로 지원하는 Raspbian이 아무래도 호환성이 좋을 듯 하고 레퍼런스 찾기도 쉬울 것 같아 좋지 않을까 생각함
+- Raspbian도 데비안 기반이라 apt-get 명령도 쓸 수 있는등 우분투에 익숙하다면 쉽게 쓸 수 있을 것 같다
+
+# 고민거리
+- 환경 설정을 도커로 하면 이점이 있을까?
