@@ -36,6 +36,11 @@
 # 고민거리
 - 환경 설정을 도커로 하면 이점이 있을까?
 
+# Study
+## 회로
+- 부품 주문 시 패키지 타입을 잘 체크하자. 예를들어 빵판에 회로 구현하는데 칩 저항 사면 못 붙인다. 고정저항(LEAD)을 주문해야함.
+- 모든 부품은 인터넷에 찾아보면 데이터시트가 있으니 데이터시트 보는데 익숙해지자.
+
 # 레퍼런스
 ## IR 제어
 - [Setting up LIRC on the RaspberryPi](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/)
