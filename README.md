@@ -35,3 +35,8 @@
 
 # 고민거리
 - 환경 설정을 도커로 하면 이점이 있을까?
+
+# 레퍼런스
+## IR 제어
+- [Setting up LIRC on the RaspberryPi](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/)
+- [라즈베리파이로 에어컨 제어하기](http://pickykang.tistory.com/37)
