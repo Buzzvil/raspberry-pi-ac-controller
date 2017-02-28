@@ -25,7 +25,20 @@
 - fritzing vs Eagle Cad vs circuits.io ?
 - fritzing이 무난해 보인다
 
-# 메모리카드 선택
+# 라즈베리 파이 및 부품 구매
+## 부품구매 사이트 추천
+### 국내
+- http://www.eleparts.co.kr/
+- http://www.devicemart.co.kr/
+- http://www.icbanq.com/
+### 해외
+- http://www.digikey.com/ -> 어디서 살 지 모르겠으면 여기서 사라
+- https://www.ti.com/ -> 학교 메일 있으면 샘플을 공짜로 받을 수 있었던 것으로 기억
+## 라즈베리파이 구매
+- http://www.eleparts.co.kr/EPXGNNFF -> 케이스랑 아답터 있으면 좋을 것 같아서 세트로 구매. 아답터 같은경우 라즈베리파이 뿐만 아니라 보드에 들어갈 전원도 충분해야 하기 때문에 3A를 추천하는데 2.5A정도도 괜찮을듯?
+- http://www.eleparts.co.kr/EPXDTWPM -> 입출력 키트. GPIO 케이블, 빵판, 저항, 스위치등 기본적인 회로구성하는데 필요한게 적절하게 들어있는 것 같음. 우선 써보고 좋으면 다른분들도 구매하면 좋을듯
+
+## 메모리카드 구매
 - http://m.blog.naver.com/alkydes/220699946626
 - http://nogada-lab.tistory.com/13
 - 결론은 mlc로 16기가 구매하기
