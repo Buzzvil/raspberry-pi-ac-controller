@@ -10,14 +10,14 @@
 - 라즈베리파이 ip를 고정 ip대신에 유동 ip를 사용하고 자동적으로 네트워크상에서 기기를 찾아 요청을 보낼 수 있도록 네트워크 구성
 
 # TODO
-- 회로도 그리기
-- 빵판에 회로 만들기
-- 리모컨에서 나오는 ir신호 캡쳐
-- ir신호 생성해서 에어컨 제어하기
-- 서버 셋업 
-- 아마존 에코 연동
-- 라즈베리파이 자동 검색 네트워크 구성 
-- 만능 기판에 ir발신기 회로 구성
+- [X] [회로도 그리기](#회로도)
+- [ ] 빵판에 회로 만들기
+- [ ] 리모컨에서 나오는 ir신호 캡쳐
+- [ ] ir신호 생성해서 에어컨 제어하기
+- [ ] 서버 셋업 
+- [ ] 아마존 에코 연동
+- [ ] 라즈베리파이 자동 검색 네트워크 구성 
+- [ ] 만능 기판에 ir발신기 회로 구성
 
 # 회로도 작성 툴 선택
 - https://trends.google.com/trends/explore?q=fritzing,Eagle%20Cad,circuits.io
@@ -67,3 +67,7 @@
 ## IR 제어
 - [Setting up LIRC on the RaspberryPi](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/)
 - [라즈베리파이로 에어컨 제어하기](http://pickykang.tistory.com/37)
+
+# 회로도
+![schematic](air-conditioner-schematic.png)
+Download [fritzing file(.fzz)](air-conditioner.fzz)
