@@ -1,0 +1,4 @@
+ac/.idea/*
+*.sqlite3
+*.pyc
+
