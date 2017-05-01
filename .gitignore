@@ -2,3 +2,11 @@ ac/.idea/*
 *.sqlite3
 *.pyc
 
+# celerybeat
+ac/celerybeat.pid
+ac/celerybeat-schedule
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride

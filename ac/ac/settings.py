@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from datetime import timedelta
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -37,6 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # For celery django orm broker
+    'kombu.transport.django',
+
+    'api',
+    'ngrok',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +129,13 @@ STATIC_URL = '/static/'
 
 
 ALLOWED_HOSTS = ['*']
+
+#### Celery
+CELERYBEAT_SCHEDULE = {
+    'update_public_url': {
+        'task': 'ngrok.tasks.update_public_url',
+        'schedule': timedelta(seconds=5),
+    },
+}
+
+CELERY_TIMEZONE = 'UTC'
