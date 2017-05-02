@@ -6,7 +6,14 @@ ac/.idea/*
 ac/celerybeat.pid
 ac/celerybeat-schedule
 
+# lambda
+lambda/node_modules
+
 ### OSX ###
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# User-specific stuff:
+.idea
+

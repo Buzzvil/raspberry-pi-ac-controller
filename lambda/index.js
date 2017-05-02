@@ -34,7 +34,7 @@ var handlers = {
                 console.log(response);
             },
             (error) => {
-                this.emit(':tellWithCard', 'uh-no, Something went wrong', SKILL_NAME, 'Something went wrong')
+                this.emit(':tellWithCard', 'uh-no, Something went wrong when I turn on the ac', SKILL_NAME, 'Something went wrong')
                 console.error('uh-oh! ' + error);
             }
         );
@@ -47,7 +47,7 @@ var handlers = {
                 console.log(response);
             },
             (error) => {
-                this.emit(':tellWithCard', 'uh-no, Something went wrong', SKILL_NAME, 'Something went wrong')
+                this.emit(':tellWithCard', 'uh-no, Something went wrong when I turn off the ac', SKILL_NAME, 'Something went wrong')
                 console.error('uh-oh! ' + error);
             }
         );
