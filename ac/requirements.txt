@@ -6,26 +6,33 @@
 #
 amqp==1.4.9               # via kombu
 anyjson==0.3.3            # via kombu
+arrow==0.10.0
+babel==2.4.0              # via delorean
 billiard==3.3.0.23        # via celery
 boto3==1.4.4
-botocore==1.5.45          # via boto3, s3transfer
+botocore==1.5.45          # via boto3, pynamodb, s3transfer
 celery==3.1.25
 click==6.7                # via pip-tools
+delorean==0.6.0           # via pynamodb
+django-extensions==1.7.8
 django==1.10.7
 docutils==0.13.1          # via botocore
 first==2.0.1              # via pip-tools
 futures==3.1.1            # via s3transfer
 gunicorn==19.7.1
+humanize==0.5.1           # via delorean
 jmespath==0.9.2           # via boto3, botocore
 kombu==3.0.37             # via celery
 pbr==3.0.0                # via stevedore
 pip-tools==1.9.0
-python-dateutil==2.6.0    # via botocore
-pytz==2017.2              # via celery
+pynamodb==2.1.5
+python-dateutil==2.6.0    # via arrow, botocore, delorean
+pytz==2017.2              # via babel, celery, delorean, tzlocal
 requests==2.13.0
 s3transfer==0.1.10        # via boto3
-six==1.10.0               # via pip-tools, python-dateutil, stevedore
+six==1.10.0               # via django-extensions, pip-tools, pynamodb, python-dateutil, stevedore
 stevedore==1.21.0         # via virtualenvwrapper
+tzlocal==1.4              # via delorean
 virtualenv-clone==0.2.6   # via virtualenvwrapper
 virtualenv==15.1.0        # via virtualenvwrapper
 virtualenvwrapper==4.7.2

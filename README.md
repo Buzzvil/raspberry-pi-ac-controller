@@ -67,6 +67,17 @@ mkdir pi
 sshfs pi@192.168.0.109: pi
 ```
 
+# 이슈
+- docker for mac clock skew
+```
+https://github.com/docker/for-mac/issues/17
+맥이 잠자기 모드 갔다오면 clock skew가 생기는 문제가 있다
+이때 boto library 사용시 
+An error occurred (InvalidSignatureException) on request () on table () when calling the DescribeTable operation: Signature expired: 20170503T140209Z is now earlier than 20170503T144558Z (20170503T150058Z - 15 min.)
+와 같이 에러가 발생한다
+docker image에 ntp 설치해서 해결
+```
+
 # 고민거리
 - 환경 설정을 도커로 하면 이점이 있을까?
 - 에어컨 3대를 제어하기 위해서는 ir 발신기가 장착된 라즈베리파이 3대가 필요한데 블루투스 -> 적외선 신호로 변환해주는 모듈이 어딘가 존재하지는 않을까? ir발신기의 유효 거리가 길지 않고 각도가 좁은게 문제인데 이를 해결할 방법이 있으면 좋겠다. 원가절감을 어떻게 할 것인가.

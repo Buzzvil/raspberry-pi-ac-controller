@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # For celery django orm broker
     'kombu.transport.django',
+    'django_extensions',
 
     'api',
     'ngrok',
@@ -139,3 +140,10 @@ CELERYBEAT_SCHEDULE = {
 }
 
 CELERY_TIMEZONE = 'UTC'
+
+### pynamodb
+DYNAMODB_DATABASES = {
+    'REGION': 'us-east-1',
+    'HOST': None,
+    'TABLE_PREFIX': 'prod_ac_',
+}
