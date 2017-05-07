@@ -1,0 +1,7 @@
+- name: Setup docker
+  script: docker.sh
+  become: yes
+
+# This need to add user to docker group without reboot
+#- name: reset ssh connection to allow user changes to affect 'current login user'
+#  meta: reset_connection

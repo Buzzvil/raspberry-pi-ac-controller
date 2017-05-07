@@ -142,8 +142,7 @@ CELERYBEAT_SCHEDULE = {
 CELERY_TIMEZONE = 'UTC'
 
 ### pynamodb
-DYNAMODB_DATABASES = {
-    'REGION': 'us-east-1',
-    'HOST': None,
-    'TABLE_PREFIX': 'prod_ac_',
-}
+DYNAMODB_DATABASES = None
+from settings_prod import *
+
+AC_LOCATION = os.environ.get('AC_LOCATION', '3rd')

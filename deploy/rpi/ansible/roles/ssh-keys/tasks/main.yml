@@ -1,0 +1,8 @@
+---
+- name: Configure authorized_keys
+  authorized_key:
+    exclusive: yes
+    key: "{{ lookup('file', 'authorized_keys') }}"
+    manage_dir: yes
+    state: present
+    user: "{{ user_name }}"

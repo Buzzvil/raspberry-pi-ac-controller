@@ -1,0 +1,10 @@
+---
+- name: Setup raspberry pi
+  hosts: all
+  gather_facts: false
+
+  roles:
+  - {role: rpi_base}
+  - {role: ir, gpio_in_pin: 23, gpio_out_pin: 22}
+  - {role: docker}
+  - {role: ac, AC_LOCATION: 3rd, AWS_ACCESS_KEY_ID: , AWS_SECRET_ACCESS_KEY: }

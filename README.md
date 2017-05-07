@@ -1,61 +1,72 @@
-# 주의!
+# 들어가기에 앞서
 - 본 프로젝트는 외부에 공개되어 있으므로 민감한 정보가 프로젝트에 추가되지 않도록 주의해주세요.
+- 개발 환경은 OSX 기준으로 되어있습니다.
 
 # 프로젝트 목표
-- 사무실 내 3대의 에어컨을 음성 제어를 이용해 편하게 켜고 끄는게 목표입니다
-- 에어컨 2대는 같은 브랜드, 다른 한대는 다른 브랜드라서 에어컨을 켤 때 리모콘을 두 개 찾아야 하는 불편함이 있는데 이를 해결하여 에어컨 리모컨을 찾는데 들어가는 시간을 절약하고 최종적으로 버즈빌 구성원들의 업무 효율성을 높이기 위함
-
-# 구현 순서
-- 라즈베리파이에 터미널 접속해서 커맨드 날려서 에어컨 켜고/끄기 구현
-- 서버 띄워서 외부에서 접속하여 에어컨 켜고/끄기
-- 슬랙으로 에어컨 켜고/끄기
-- 아마존 에코로 에어컨 켜고/끄기
-- 라즈베리파이 ip를 고정 ip대신에 유동 ip를 사용하고 자동적으로 네트워크상에서 기기를 찾아 요청을 보낼 수 있도록 네트워크 구성
+- 사무실 내 3대의 에어컨을 음성 제어를 이용해 편하게 켜고 끄는게 목표입니다.
+- 에어컨 2대는 같은 브랜드, 다른 한대는 다른 브랜드라서 에어컨을 켤 때 리모콘을 두 개 찾아야 하는 불편함이 있는데 이를 해결하여 에어컨 리모컨을 찾는데 들어가는 시간을 절약하여 업무 효율성을 높이자.
 
 # TODO
 - [X] [회로도 그리기](#회로도)
-- [ ] 빵판에 회로 만들기
+- [X] 빵판에 회로 만들기
 - [ ] 리모컨에서 나오는 ir신호 캡쳐
-- [ ] ir신호 생성해서 에어컨 제어하기
-- [ ] 서버 셋업 
-- [ ] 아마존 에코 연동
-- [ ] 라즈베리파이 자동 검색 네트워크 구성 
-- [ ] 만능 기판에 ir발신기 회로 구성
+- [ ] irsend 이용해 에어컨 제어하기
+- [ ] 서버 셋업
+- [ ] 라즈베리파이 자동 검색 네트워크 구성
+- [X] ngrok을 활용한 고정 public ip 할당
+- [X] 도커 배포 환경 구축
+- [ ] 모든 배포 환경 자동화
+- [X] 만능 기판에 ir발신기 회로 구성
+- [X] 아마존 에코 연동
+- [ ] 슬랙으로 에어컨 켜고/끄기
 
-# 회로도 작성 툴 선택
-- https://trends.google.com/trends/explore?q=fritzing,Eagle%20Cad,circuits.io
-- https://ptarmiganlabs.com/blog/2013/08/27/fritzing-vs-circuits-io-vs-eagle-comparing-schematics-editors/
-- fritzing vs Eagle Cad vs circuits.io ?
-- fritzing이 무난해 보인다
-
-# 라즈베리 파이 및 부품 구매
-## 부품구매 사이트 추천
-
-### 국내
-- http://www.eleparts.co.kr/
-- http://www.devicemart.co.kr/
-- http://www.icbanq.com/
-
-### 해외
-- http://www.digikey.com/ -> 어디서 살 지 모르겠으면 여기서 사라
-- https://www.ti.com/ -> 학교 메일 있으면 샘플을 공짜로 받을 수 있었던 것으로 기억
-
-## 라즈베리파이 구매
-- http://www.eleparts.co.kr/EPXGNNFF -> 케이스랑 아답터 있으면 좋을 것 같아서 세트로 구매. 아답터 같은경우 라즈베리파이 뿐만 아니라 보드에 들어갈 전원도 충분해야 하기 때문에 3A를 추천하는데 2.5A정도도 괜찮을듯?
-- http://www.eleparts.co.kr/EPXDTWPM -> 입출력 키트. GPIO 케이블, 빵판, 저항, 스위치등 기본적인 회로구성하는데 필요한게 적절하게 들어있는 것 같음. 우선 써보고 좋으면 다른분들도 구매하면 좋을듯
-
-## 메모리카드 구매
-- http://m.blog.naver.com/alkydes/220699946626
-- http://nogada-lab.tistory.com/13
-- 결론은 mlc로 16기가 구매하기
-- Sandisk micro sd extreme 16GB 구매
-- 샌디스크 16기가가 대부분 품절이라 (http://www.wemakeprice.com/deal/adeal/1343369/?utm_source=naver_ep&utm_medium=PRICE_af&utm_campaign=1343369&src=text&kw=02413D) 에서 32기가 구매. (5번 32GB 무료배송)
+# 회로 구성
+## 준비물
+- [라즈베리파이 3](http://www.eleparts.co.kr/EPXGNNFF)
+- USB 아답터 2.5A 이상
+- MLC SD card 16기가 -> Sandisk micro sd extreme 16GB 구매
+- [빵판 or 라즈베리파이 입출력키트](http://www.eleparts.co.kr/EPXDTWPM) - 귀찮으면 입출력키트 지르자
 
 # 개발 환경
-## 라즈베리파이 운영체제 선택
-- Android things, Ubuntu Mate, Raspbian 등이 있는 것 같음
-- GUI쪽에 특별히 신경쓸게 아니라면 뭘 쓰던 상관 없는 것 같고 공식으로 지원하는 Raspbian이 아무래도 호환성이 좋을 듯 하고 레퍼런스 찾기도 쉬울 것 같아 좋지 않을까 생각함
-- Raspbian도 데비안 기반이라 apt-get 명령도 쓸 수 있는등 우분투에 익숙하다면 쉽게 쓸 수 있을 것 같다
+
+## 라즈비안 설치
+- [SD Card Formatter](https://www.sdcard.org/downloads/formatter_4/) 받아서 SD카드 포맷
+- https://www.raspberrypi.org/downloads/raspbian/ 에서 이미지 받고 압축 풀어서 .img 파일을 실행시키면 boot volume이 마운트된다
+- 기본으로 ssh가 꺼져 있기 때문에 켜기 위해서 아래처럼 파일을 생성해준다
+```bash
+sudo touch /Volumes/boot/ssh
+```
+
+- 아래 파일을 열어서 내용추가
+```bash
+sudo vi /Volumes/boot/wpa_supplicant.conf
+```
+```
+network={
+  ssid="YOUR_NETWORK_NAME"
+  psk="YOUR_NETWORK_PASSWORD"
+  key_mgmt=WPA-PSK
+}
+```
+- [pi-baker](https://www.tweaking4all.com/software/macosx-software/macosx-apple-pi-baker/) 받아서 Restore Back으로 img파일 굽기
+- network에서 라즈베리파이 찾기
+```
+which apr || brew install arp-scan
+arp -a | grep b8:27:eb | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+```
+- ssh pi@xxx.xxx.xxx.xx with password raspberry
+
+- sudo raspi-config 실행해서 ssh 비번 바꾸기 
+- ~/.ssh/authorized_keys 에 public key 넣어놓기
+- ansible로 필요한것들 설치
+```bash
+cd deploy/rpi/ansible
+ansible-playbook --ask-pass -i hosts setup_rpi.yml
+```
+
+## Docker
+- https://www.docker.com/docker-mac
+
 
 ## sshfs 설정
 - https://www.raspberrypi.org/documentation/remote-access/ssh/sshfs.md
@@ -66,6 +77,7 @@ brew install sshfs
 mkdir pi
 sshfs pi@192.168.0.109: pi
 ```
+
 
 # 이슈
 - docker for mac clock skew
@@ -78,21 +90,81 @@ An error occurred (InvalidSignatureException) on request () on table () when cal
 docker image에 ntp 설치해서 해결
 ```
 
+
+# 회로도
+![schematic](air-conditioner-schematic.png)
+Download [fritzing file(.fzz)](air-conditioner.fzz)
+
+
 # 고민거리
 - 환경 설정을 도커로 하면 이점이 있을까?
 - 에어컨 3대를 제어하기 위해서는 ir 발신기가 장착된 라즈베리파이 3대가 필요한데 블루투스 -> 적외선 신호로 변환해주는 모듈이 어딘가 존재하지는 않을까? ir발신기의 유효 거리가 길지 않고 각도가 좁은게 문제인데 이를 해결할 방법이 있으면 좋겠다. 원가절감을 어떻게 할 것인가.
 - 만능기판 레이아웃도 그려야하나?
 
-# Study
+
+# Research & Study
+## 회로도 작성 툴 선택
+ - https://trends.google.com/trends/explore?q=fritzing,Eagle%20Cad,circuits.io
+ - https://ptarmiganlabs.com/blog/2013/08/27/fritzing-vs-circuits-io-vs-eagle-comparing-schematics-editors/
+ - fritzing vs Eagle Cad vs circuits.io ?
+ - fritzing이 무난해 보인다
+ 
+## 납땜 환경 구축
+### 준비물
+- FX-888D(70W)
+- 칼팁 T18-K
+- 테프론 와이어 AWG30 (AWG숫자가 작을수록 굵고 저항이 작음)
+- KESTER Solder 1mm
+- Burnley 솔더링 페이스트
+- Hakko Solder Wick 1.9mm
+- PCB지지대 (긴거 수, 짧은거 암)
+- VETUS [SS-SA] 스테인레스 정밀 무광핀셋
+- 소켓 점퍼케이블 DC-40P 20CM (F/F)
+- 핀 헤더 한줄짜리 PH01(2.54)-SS40P-11.5MM -> 두줄짜리 자르기 힘듦
+- [만능기판](http://www.eleparts.co.kr/EPXDFA87) - 페놀보다는 좀 더 좋은 에폭시 재질을 구매
+ 
 ## 회로
 - 부품 주문 시 패키지 타입을 잘 체크하자. 예를들어 빵판에 회로 구현하는데 칩 저항 사면 못 붙인다. 고정저항(LEAD)을 주문해야함.
 - 모든 부품은 인터넷에 찾아보면 데이터시트가 있으니 데이터시트 보는데 익숙해지자.
+
+## 저항 구매 팁
+- 탄소피막저항 lead 타입 1/4W 5% 짜리로 구입. 1/2W로 사면 크기가 좀 크다.
+
+## IR emitter 선택
+- 파장 940nm 짜리 필요
+- 발신 각도 넓은것으로 구매하자
+- 후보 http://www.vishay.com/ir-emitting-diodes/d
+- [VSMB10940X01](http://www.vishay.com/ir-emitting-diodes/list/product-84216/)
+- [VSMY1940X01](http://www.vishay.com/ir-emitting-diodes/list/product-84214/)
+- [VSMY3940X01](http://www.vishay.com/ir-emitting-diodes/list/product-84220/)
+
+## 라즈베리파이 운영체제 선택
+- Android things, Ubuntu Mate, Raspbian 등이 있는 것 같음
+- GUI쪽에 특별히 신경쓸게 아니라면 뭘 쓰던 상관 없는 것 같고 공식으로 지원하는 Raspbian이 아무래도 호환성이 좋을 듯 하고 레퍼런스 찾기도 쉬울 것 같아 좋지 않을까 생각함
+- Raspbian도 데비안 기반이라 apt-get 명령도 쓸 수 있는등 우분투에 익숙하다면 쉽게 쓸 수 있을 것 같다
+
+## 부품구매 사이트 추천
+
+### 국내
+- http://www.eleparts.co.kr/
+- http://www.devicemart.co.kr/
+- http://www.icbanq.com/
+
+### 해외
+- http://www.digikey.com/ -> 어디서 살 지 모르겠으면 여기서 사라
+- https://www.ti.com/ -> 학교 메일 있으면 샘플을 공짜로 받을 수 있었던 것으로 기억
+
 
 # 레퍼런스
 ## IR 제어
 - [Setting up LIRC on the RaspberryPi](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/)
 - [라즈베리파이로 에어컨 제어하기](http://pickykang.tistory.com/37)
+- [버섯돌이의 허큘렉스 다루기 - IR 입문(2.LIRC 설정및 테스트)](http://www.icbanq.com/pbloger/board_View.aspx?number=657)
 
-# 회로도
-![schematic](air-conditioner-schematic.png)
-Download [fritzing file(.fzz)](air-conditioner.fzz)
+## 납땜 준비
+- [납땜 기초 알아보기](https://kocoafab.cc/tutorial/view/512)
+- [누구나 할수 있는 납땜의 기초 - 필요 장비의 소개](http://zecca.tistory.com/167)
+
+## SD카드 구매
+- [라즈베리파이3 어떤 micro SD 메모리를 구입해야 하는가?](http://m.blog.naver.com/alkydes/220699946626)
+- [라즈베리파이 개론 - SD 카드 선택](http://nogada-lab.tistory.com/13)
