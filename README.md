@@ -20,6 +20,17 @@
 - [X] 아마존 에코 연동
 - [ ] 슬랙으로 에어컨 켜고/끄기
 
+
+# 회로도
+![schematic](assets/air-conditioner-schematic.png)
+Download [fritzing file(.fzz)](air-conditioner.fzz)
+
+
+# 어플리케이션 구조도
+![structure](assets/air-conditioner-structure.png)
+[원본](https://docs.google.com/presentation/d/10ZRbJJHFH7znxYNwCARpbbcZcShggCh8eihLedmicmc/edit#slide=id.p)
+
+
 # 회로 구성
 ## 준비물
 - [라즈베리파이 3](http://www.eleparts.co.kr/EPXGNNFF)
@@ -89,17 +100,6 @@ An error occurred (InvalidSignatureException) on request () on table () when cal
 와 같이 에러가 발생한다
 docker image에 ntp 설치해서 해결
 ```
-
-
-# 회로도
-![schematic](assets/air-conditioner-schematic.png)
-Download [fritzing file(.fzz)](air-conditioner.fzz)
-
-
-# 어플리케이션 구조도
-![structure](assets/air-conditioner-structure.png)
-[원본](https://docs.google.com/presentation/d/10ZRbJJHFH7znxYNwCARpbbcZcShggCh8eihLedmicmc/edit#slide=id.p)
-
 
 
 # 고민거리
