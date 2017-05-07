@@ -29,7 +29,7 @@
 
 # 개발 환경
 
-## 라즈비안 설치
+## 라즈비안 설치 without monitor & keyboard
 - [SD Card Formatter](https://www.sdcard.org/downloads/formatter_4/) 받아서 SD카드 포맷
 - https://www.raspberrypi.org/downloads/raspbian/ 에서 이미지 받고 압축 풀어서 .img 파일을 실행시키면 boot volume이 마운트된다
 - 기본으로 ssh가 꺼져 있기 때문에 켜기 위해서 아래처럼 파일을 생성해준다
