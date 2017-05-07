@@ -92,8 +92,14 @@ docker image에 ntp 설치해서 해결
 
 
 # 회로도
-![schematic](air-conditioner-schematic.png)
+![schematic](assets/air-conditioner-schematic.png)
 Download [fritzing file(.fzz)](air-conditioner.fzz)
+
+
+# 어플리케이션 구조도
+![structure](assets/air-conditioner-structure.png)
+[원본](https://docs.google.com/presentation/d/10ZRbJJHFH7znxYNwCARpbbcZcShggCh8eihLedmicmc/edit#slide=id.p)
+
 
 
 # 고민거리
