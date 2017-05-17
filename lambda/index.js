@@ -41,7 +41,8 @@ var handlers = {
                 return;
             }
             // Make a request
-            request.get(url + '/api/ac/on/').then(
+            console.log('sending request to ' + url)
+            return request.get(url + '/api/ac/on/').then(
                 (response) => {
                     that.emit(':tellWithCard', 'The AC is on', SKILL_NAME, 'Thanks')
                     console.log(response);
@@ -62,7 +63,8 @@ var handlers = {
                 return;
             }
             // Make a request
-            request.get(url + 'api/ac/off/').then(
+            console.log('sending request to ' + url)
+            return request.get(url + 'api/ac/off/').then(
                 (response) => {
                     that.emit(':tellWithCard', 'The AC is off', SKILL_NAME, 'Thanks')
                     console.log(response);
@@ -87,10 +89,11 @@ var handlers = {
     }
 };
 
-var getUrl = function(location, postback) {
+var getUrl = function (location, postback) {
     var params = {
         TableName : 'prod_ac_public_url',
-        KeyConditionExpression: '#loc = :val',
+        ProjectionExpression: '#loc, public_url',
+        FilterExpression: '#loc = :val',
         ExpressionAttributeNames:{
             '#loc': 'location'
         },
@@ -99,15 +102,24 @@ var getUrl = function(location, postback) {
         }
     };
 
-    docClient.query(params, function(err, data) {
+    var onScan = function (err, data) {
         if (err) {
-            console.error('Unable to query. Error:', JSON.stringify(err, null, 2));
+            console.error('Unable to scan. Error:', JSON.stringify(err, null, 2));
             return postback(false, err);
-        } else {
-            console.log('Query succeeded.');
-            data.Items.forEach(function(item) {
-                postback(item.public_url, false); // TODO we need to send one success message for each AC operation in a location
-            });
         }
-    });
+        console.log('Scan succeeded.');
+        data.Items.forEach(function(item) {
+            postback(item.public_url, false); // TODO we need to send one success message for each AC operation in a location
+        });
+        // continue scanning if we have more rows, because
+        // scan can retrieve a maximum of 1MB of data
+        if (typeof data.LastEvaluatedKey != 'undefined') {
+            console.log("Scanning for more...");
+            params.ExclusiveStartKey = data.LastEvaluatedKey;
+            docClient.scan(params, onScan);
+        }
+        console.log('Scan done.');
+    };
+
+    docClient.scan(params, onScan);
 };
