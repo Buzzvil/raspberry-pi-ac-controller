@@ -4,7 +4,7 @@ var Alexa = require('alexa-sdk');
 var request = require('request-promise');
 
 var APP_ID = undefined; //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
-var SKILL_NAME = 'Space Facts';
+var SKILL_NAME = 'pi';
 AWS.config.update({
   region: 'us-east-1',
   endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
@@ -41,7 +41,7 @@ var handlers = {
                 return;
             }
             // Make a request
-            console.log('sending request to ' + url)
+            console.log('sending AC request to ' + url)
             return request.get(url + '/api/ac/on/').then(
                 (response) => {
                     that.emit(':tellWithCard', 'The AC is on', SKILL_NAME, 'Thanks')
@@ -63,7 +63,7 @@ var handlers = {
                 return;
             }
             // Make a request
-            console.log('sending request to ' + url)
+            console.log('sending AC request to ' + url)
             return request.get(url + 'api/ac/off/').then(
                 (response) => {
                     that.emit(':tellWithCard', 'The AC is off', SKILL_NAME, 'Thanks')
@@ -76,8 +76,93 @@ var handlers = {
             );
         });
     },
+    'MolangIntent': function () {
+        console.log(this.event.request.intent.slots)
+        var sign = this.event.request.intent.slots.Sign.value
+        if (sign == 'on') {
+            return this.emit('MolangTurnOn');
+        } else if (sign == 'off') {
+            return this.emit('MolangTurnOff');
+        }
+        var color = this.event.request.intent.slots.Color.value
+        if (color == 'red') {
+            return this.emit('MolangColor', color);
+        } else if (sign == 'blue') {
+            return this.emit('MolangColor', color);
+        } else if (sign == 'green') {
+            return this.emit('MolangColor', color);
+        }
+        return this.emit('AMAZON.HelpIntent')
+    },
+    'MolangTurnOn': function () {
+        var that = this
+        getUrl('3rd', (url, error) => {
+            if (error) {
+                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn on Molang', SKILL_NAME, 'Something went wrong')
+                console.error('uh-oh! ' + error);
+                return;
+            }
+            // Make a request
+            console.log('sending Molang request to ' + url)
+            return request.get(url + '/api/light/on/').then(
+                (response) => {
+                    that.emit(':tellWithCard', 'Molang is on', SKILL_NAME, 'Thanks')
+                    console.log(response);
+                },
+                (error) => {
+                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn on Molang', SKILL_NAME, 'Something went wrong')
+                    console.error('uh-oh! ' + error);
+                }
+            );
+        });
+    },
+    'MolangTurnOff': function () {
+        var that = this
+        getUrl('3rd', (url, error) => {
+            if (error) {
+                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn off Molang', SKILL_NAME, 'Something went wrong')
+                console.error('uh-oh! ' + error);
+                return;
+            }
+            // Make a request
+            console.log('sending Molang request to ' + url)
+            return request.get(url + 'api/light/off/').then(
+                (response) => {
+                    that.emit(':tellWithCard', 'Molang is off', SKILL_NAME, 'Thanks')
+                    console.log(response);
+                },
+                (error) => {
+                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn off Molang', SKILL_NAME, 'Something went wrong')
+                    console.error('uh-oh! ' + error);
+                }
+            );
+        });
+    },
+    'MolangColor': function (color) {
+        var that = this
+        getUrl('3rd', (url, error) => {
+            if (error) {
+                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn color of Molang', SKILL_NAME, 'Something went wrong')
+                console.error('uh-oh! ' + error);
+                return;
+            }
+            // Make a request
+            console.log(color + ' sending Molang request to ' + url) 
+            // TODO color
+            return request.get(url + 'api/light/color/' + color.toUpperCase().charAt(0) + '/' ).then(
+                (response) => {
+                    that.emit(':tellWithCard', 'Molang turn to ' + color +' color', SKILL_NAME, 'Thanks')
+                    console.log(response);
+                },
+                (error) => {
+                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn color of Molang', SKILL_NAME, 'Something went wrong')
+                    console.error('uh-oh! ' + error);
+                }
+            );
+        });
+    },
     'AMAZON.HelpIntent': function () {
-        var speechOutput = "You can say tell me a space fact, or, you can say exit... What can I help you with?";
+        var speechOutput = "You can say turn on AC, or, you can say exit... What can I help you with?";
         var reprompt = "What can I help you with?";
         this.emit(':ask', speechOutput, reprompt);
     },
