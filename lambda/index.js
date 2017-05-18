@@ -1,6 +1,7 @@
 'use strict';
 var AWS = require("aws-sdk");
 var Alexa = require('alexa-sdk');
+var Promise = require('bluebird');
 var request = require('request-promise');
 
 var APP_ID = undefined; //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
@@ -9,6 +10,7 @@ AWS.config.update({
   region: 'us-east-1',
   endpoint: 'https://dynamodb.us-east-1.amazonaws.com'
 });
+AWS.config.setPromisesDependency(require('bluebird'));
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = function(event, context, callback) {
@@ -33,48 +35,26 @@ var handlers = {
         return this.emit('AMAZON.HelpIntent')
     },
     'ACTurnOn': function () {
-        var that = this
-        getUrl('3rd', (url, error) => {
-            if (error) {
-                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn on the ac', SKILL_NAME, 'Something went wrong')
+        var that = this;
+        return sendRequest('3rd', '/api/ac/on/')
+            .then(() => {
+                that.emit(':tellWithCard', 'All 3rd floor AC are on!', SKILL_NAME, 'Thanks');
+            })
+            .catch((error) => {
+                that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn on the ac', SKILL_NAME, 'Something went wrong');
                 console.error('uh-oh! ' + error);
-                return;
-            }
-            // Make a request
-            console.log('sending AC request to ' + url)
-            return request.get(url + '/api/ac/on/').then(
-                (response) => {
-                    that.emit(':tellWithCard', 'The AC is on', SKILL_NAME, 'Thanks')
-                    console.log(response);
-                },
-                (error) => {
-                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn on the ac', SKILL_NAME, 'Something went wrong')
-                    console.error('uh-oh! ' + error);
-                }
-            );
-        });
+            });
     },
     'ACTurnOff': function () {
-        var that = this
-        getUrl('3rd', (url, error) => {
-            if (error) {
-                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn off the ac', SKILL_NAME, 'Something went wrong')
+        var that = this;
+        return sendRequest('3rd', '/api/ac/off/')
+            .then(() => {
+                that.emit(':tellWithCard', 'All 3rd floor AC are off!', SKILL_NAME, 'Thanks');
+            })
+            .catch((error) => {
+                that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn off the ac', SKILL_NAME, 'Something went wrong');
                 console.error('uh-oh! ' + error);
-                return;
-            }
-            // Make a request
-            console.log('sending AC request to ' + url)
-            return request.get(url + 'api/ac/off/').then(
-                (response) => {
-                    that.emit(':tellWithCard', 'The AC is off', SKILL_NAME, 'Thanks')
-                    console.log(response);
-                },
-                (error) => {
-                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn off the ac', SKILL_NAME, 'Something went wrong')
-                    console.error('uh-oh! ' + error);
-                }
-            );
-        });
+            });
     },
     'MolangIntent': function () {
         console.log(this.event.request.intent.slots)
@@ -95,71 +75,37 @@ var handlers = {
         return this.emit('AMAZON.HelpIntent')
     },
     'MolangTurnOn': function () {
-        var that = this
-        getUrl('3rd', (url, error) => {
-            if (error) {
-                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn on Molang', SKILL_NAME, 'Something went wrong')
+        var that = this;
+        return sendRequest('3rd', '/api/light/on/')
+            .then(() => {
+                that.emit(':tellWithCard', 'Molang is on', SKILL_NAME, 'Thanks');
+            })
+            .catch((error) => {
+                that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn on Molang', SKILL_NAME, 'Something went wrong');
                 console.error('uh-oh! ' + error);
-                return;
-            }
-            // Make a request
-            console.log('sending Molang request to ' + url)
-            return request.get(url + '/api/light/on/').then(
-                (response) => {
-                    that.emit(':tellWithCard', 'Molang is on', SKILL_NAME, 'Thanks')
-                    console.log(response);
-                },
-                (error) => {
-                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn on Molang', SKILL_NAME, 'Something went wrong')
-                    console.error('uh-oh! ' + error);
-                }
-            );
-        });
+            });
     },
     'MolangTurnOff': function () {
-        var that = this
-        getUrl('3rd', (url, error) => {
-            if (error) {
-                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn off Molang', SKILL_NAME, 'Something went wrong')
+        var that = this;
+        return sendRequest('3rd', '/api/light/off/')
+            .then(() => {
+                that.emit(':tellWithCard', 'Molang is off', SKILL_NAME, 'Thanks');
+            })
+            .catch((error) => {
+                that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn off Molang', SKILL_NAME, 'Something went wrong');
                 console.error('uh-oh! ' + error);
-                return;
-            }
-            // Make a request
-            console.log('sending Molang request to ' + url)
-            return request.get(url + 'api/light/off/').then(
-                (response) => {
-                    that.emit(':tellWithCard', 'Molang is off', SKILL_NAME, 'Thanks')
-                    console.log(response);
-                },
-                (error) => {
-                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn off Molang', SKILL_NAME, 'Something went wrong')
-                    console.error('uh-oh! ' + error);
-                }
-            );
-        });
+            });
     },
     'MolangColor': function (color) {
-        var that = this
-        getUrl('3rd', (url, error) => {
-            if (error) {
-                that.emit(':tellWithCard', 'Sorry, something went wrong when I tried to turn color of Molang', SKILL_NAME, 'Something went wrong')
+        var that = this;
+        return sendRequest('3rd', '/api/light/color/' + color.charAt(0))
+            .then(() => {
+                that.emit(':tellWithCard', 'Molang turn to ' + color +' color', SKILL_NAME, 'Thanks');
+            })
+            .catch((error) => {
+                that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn color of Molang', SKILL_NAME, 'Something went wrong');
                 console.error('uh-oh! ' + error);
-                return;
-            }
-            // Make a request
-            console.log(color + ' sending Molang request to ' + url) 
-            // TODO color
-            return request.get(url + 'api/light/color/' + color.toUpperCase().charAt(0) + '/' ).then(
-                (response) => {
-                    that.emit(':tellWithCard', 'Molang turn to ' + color +' color', SKILL_NAME, 'Thanks')
-                    console.log(response);
-                },
-                (error) => {
-                    that.emit(':tellWithCard', 'Sorry, Something went wrong when I tried turn color of Molang', SKILL_NAME, 'Something went wrong')
-                    console.error('uh-oh! ' + error);
-                }
-            );
-        });
+            });
     },
     'AMAZON.HelpIntent': function () {
         var speechOutput = "You can say turn on AC, or, you can say exit... What can I help you with?";
@@ -174,7 +120,7 @@ var handlers = {
     }
 };
 
-var getUrl = function (location, postback) {
+var getUrl = function (location) {
     var params = {
         TableName : 'prod_ac_public_url',
         ProjectionExpression: '#loc, public_url',
@@ -187,24 +133,53 @@ var getUrl = function (location, postback) {
         }
     };
 
-    var onScan = function (err, data) {
-        if (err) {
-            console.error('Unable to scan. Error:', JSON.stringify(err, null, 2));
-            return postback(false, err);
-        }
+    var onScan = function (data) {
         console.log('Scan succeeded.');
-        data.Items.forEach(function(item) {
-            postback(item.public_url, false); // TODO we need to send one success message for each AC operation in a location
+        var urls = data.Items.map((item) => {
+            return item.public_url;
         });
         // continue scanning if we have more rows, because
         // scan can retrieve a maximum of 1MB of data
         if (typeof data.LastEvaluatedKey != 'undefined') {
             console.log("Scanning for more...");
             params.ExclusiveStartKey = data.LastEvaluatedKey;
-            docClient.scan(params, onScan);
+            return docClient.scan(params).promise()
+                .then(onScan)
+                .then((_urls) => {
+                    return urls.concat(_urls);
+                });
         }
         console.log('Scan done.');
+        return urls;
     };
 
-    docClient.scan(params, onScan);
+    return docClient.scan(params).promise()
+        .then(onScan);
+};
+
+var sendRequest = function(floor, api) {
+    return getUrl(floor)
+            .then((urls) => {
+                // send signal for all urls
+                var requestPromises = urls.map((url) => {
+                    console.log('preparing request to ' + url);
+                    return request.get(url + api)
+                        .catch((error) => {
+                            console.error('uh-oh! ' + error);
+                            return false; // flag
+                        });
+                });
+                console.log('sending requests');
+                return Promise.all(requestPromises);
+            })
+            .then((responses) => {
+                var success = false;
+                responses.forEach(function(resp) {
+                    success = success || resp
+                });
+                if (!success) {
+                    throw 'No device responded!';
+                }
+                return true;
+            });
 };
