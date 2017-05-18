@@ -64,9 +64,13 @@
     option: MODULES
     value: "\"lirc_rpi\""
 
-- name: copy lircd.conf
+#- name: copy lircd.conf file for ac_lg
+#  become: yes
+#  template: src=lircd_ac_lg.conf dest=/etc/lirc/lircd.conf.d/
+
+- name: copy lircd.conf file for light
   become: yes
-  template: src=lircd.conf dest=/etc/lirc/
+  template: src=lircd_light.conf dest=/etc/lirc/
 
 - name: restart lirc
   become: yes

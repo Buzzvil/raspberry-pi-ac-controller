@@ -4,7 +4,7 @@
   gather_facts: false
 
   roles:
-#  - {role: rpi_base}
-  - {role: ir, gpio_in_pin: 21, gpio_out_pin: 23}
-#  - {role: docker}
-#  - {role: ac, AC_LOCATION: 3rd, AWS_ACCESS_KEY_ID: , AWS_SECRET_ACCESS_KEY: }
+  - {role: rpi_base}
+  - {role: ir, gpio_in_pin: 5, gpio_out_pin: 3}
+  - {role: docker}
+  - {role: ac, AC_LOCATION: 3rd, AWS_ACCESS_KEY_ID: , AWS_SECRET_ACCESS_KEY: }
