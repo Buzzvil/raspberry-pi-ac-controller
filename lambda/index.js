@@ -3,6 +3,7 @@ var AWS = require("aws-sdk");
 var Alexa = require('alexa-sdk');
 var Promise = require('bluebird');
 var request = require('request-promise');
+var qs = require('qs');
 
 var APP_ID = undefined; //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 var SKILL_NAME = 'pi';
@@ -12,8 +13,14 @@ AWS.config.update({
 });
 AWS.config.setPromisesDependency(require('bluebird'));
 var docClient = new AWS.DynamoDB.DocumentClient();
+var defaultSlackResponseType = 'in_channel';
 
 exports.handler = function(event, context, callback) {
+    if (event.postBody) {
+        // slack request
+        return slackHandler(event.postBody, callback);
+    }
+    // alexa request
     var alexa = Alexa.handler(event, context);
     alexa.APP_ID = APP_ID;
     alexa.registerHandlers(handlers);
@@ -119,6 +126,56 @@ var handlers = {
         this.emit(':tell', 'Goodbye!');
     }
 };
+
+var slackHandler = function(postBody, callback) {
+    console.log('Got Slack event with ', postBody)
+    // parse to json
+    var body = qs.parse(postBody);
+    // TODO validate token
+    // if (body.token != 'FVt0A9tcrwyIip4tyKEWI2Zr') {
+    //     console.log('Invalid token')
+    //     return callback(null, {
+    //         text: 'Invalid Token',
+    //     });
+    // }
+    if (body.command === '/acon') {
+        return sendRequest('3rd', '/api/ac/on/')
+            .then(() => {
+                callback(null, {
+                    text: 'All 3rd floor AC are on!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong when I tried turn on the ac',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
+    if (body.command === '/acoff') {
+        return sendRequest('3rd', '/api/ac/off/')
+            .then(() => {
+                callback(null, {
+                    text: 'All 3rd floor AC are off!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong when I tried turn off the ac',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
+    return callback(null, {
+        text: 'Try to send acon or acoff command!',
+    });
+}
 
 var getUrl = function (location) {
     var params = {
