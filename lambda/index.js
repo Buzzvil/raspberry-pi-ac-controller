@@ -105,7 +105,7 @@ var handlers = {
     },
     'MolangColor': function (color) {
         var that = this;
-        return sendRequest('3rd', '/api/light/color/' + color.charAt(0))
+        return sendRequest('3rd', '/api/light/color/' + color.toUpperCase().charAt(0))
             .then(() => {
                 that.emit(':tellWithCard', 'Molang turn to ' + color +' color', SKILL_NAME, 'Thanks');
             })
@@ -142,7 +142,7 @@ var slackHandler = function(postBody, callback) {
         return sendRequest('3rd', '/api/ac/on/')
             .then(() => {
                 callback(null, {
-                    text: 'All 3rd floor AC are on!',
+                    text: 'All 3rd floor AC are *on*!',
                     response_type: defaultSlackResponseType,
                 });
             })
@@ -159,13 +159,70 @@ var slackHandler = function(postBody, callback) {
         return sendRequest('3rd', '/api/ac/off/')
             .then(() => {
                 callback(null, {
-                    text: 'All 3rd floor AC are off!',
+                    text: 'All 3rd floor AC are *off*!',
                     response_type: defaultSlackResponseType,
                 });
             })
             .catch((error) => {
                 callback(null, {
                     text: 'Sorry, Something went wrong when I tried turn off the ac',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
+    if (body.command === '/lighton') {
+        return sendRequest('3rd', '/api/light/on/')
+            .then(() => {
+                callback(null, {
+                    text: 'The light is *on*!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong when I tried turn on the light',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
+    if (body.command === '/lightoff') {
+        return sendRequest('3rd', '/api/light/off/')
+            .then(() => {
+                callback(null, {
+                    text: 'The light is *off*!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong when I tried turn the light',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
+    if (body.command === '/lightcolor') {
+        var color = body.text
+        if (!color || !color.length) {
+            return callback(null, {
+                text: 'Invalid color! Please provide color *(red, green or blue)*',
+            });
+        }
+        return sendRequest('3rd', '/api/light/color/' + color.toUpperCase().charAt(0))
+            .then(() => {
+                callback(null, {
+                    text: 'Light turn to *' + color +'* color!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong when I tried turn color of the light',
                     response_type: defaultSlackResponseType,
                 });
                 console.error('uh-oh! ' + error);
