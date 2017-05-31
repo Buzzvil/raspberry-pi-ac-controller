@@ -11,22 +11,24 @@ def hello(request):
 
 
 def ac_on(request):
-    call(["irsend", "SEND_ONCE", "ac_lg", "KEY_ON"])
+    call(["irsend", "SEND_ONCE", "lg-ac", "BTN_1"])
+    call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_1"])
     return JsonResponse({})
 
 
 def ac_off(request):
-    call(["irsend", "SEND_ONCE", "ac_lg", "KEY_OFF"])
+    call(["irsend", "SEND_ONCE", "lg-ac", "BTN_0"])
+    call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_0"])
     return JsonResponse({})
 
 
 def ac_temp_up(request):
-    call(["irsend", "SEND_ONCE", "ac_lg", "KEY_TEMP_UP"])
+    call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_UP"])
     return JsonResponse({})
 
 
 def ac_temp_down(request):
-    call(["irsend", "SEND_ONCE", "ac_lg", "KEY_TEMP_DOWN"])
+    call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_DOWN"])
     return JsonResponse({})
 
 
