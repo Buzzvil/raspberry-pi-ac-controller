@@ -112,6 +112,11 @@ irrecord -d /dev/lirc0 --disable-namespace -f ~/lircd.conf
 ```
 - `--disable-namespace` : 각 키에 할당할 수 있는 lable의 리스트가 원래 정해져 있는데, 사용할 label을 직접 정의해서 사용하려고 하는 경우 추가. 원래 정의할 수 있는 label 리스트는 `irrecord --list-namespace` 로 조회 가능.
 
+3. samsung ac 인식
+- irrecord 대신에 mode2 사용해야함
+```
+sudo mode2 -m -d /dev/lirc0 > ~/lirc.conf
+```
 
 # 이슈
 - docker for mac clock skew
