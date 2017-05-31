@@ -9,7 +9,8 @@
 # TODO
 - [X] [회로도 그리기](#회로도)
 - [X] 빵판에 회로 만들기
-- [ ] 리모컨에서 나오는 ir신호 캡쳐
+- [X] 리모컨에서 나오는 ir신호 캡쳐
+- [ ] 캡쳐된 ir신호 발신기 conf 파일 셋업
 - [ ] irsend 이용해 에어컨 제어하기
 - [ ] 서버 셋업
 - [ ] 라즈베리파이 자동 검색 네트워크 구성
@@ -90,6 +91,33 @@ sshfs pi@192.168.0.109: pi
 ```
 
 
+## LIRC 이용한 적외선 신호 발신기 등록 및 신호 송신
+
+- LIRC(Linux Infrared Remote Control) : http://www.lirc.org/html/configuration-guide.html
+- 라이브러리 및 환경 설정은 다 되어있다는 가정
+
+1. IR receiver 와 lirc 간 연계 테스트 : 셋업해 둔 IR receiver 가 lirc 로 정상적으로 IR 신호를 전달하고 있는지 확인용.
+
+```bash
+/etc/init.d/lirc stop // lirc deamon 중단
+mode2 -d /dev/lirc0
+```
+
+실행 후 IR 송신기의 버튼을 눌렀을 때 터미널에 `space, pulse` 등의 문자가 출력되면 정상.
+
+2. irrecord 이용해 송신기의 환경 설정 파일 생성
+- lirc 가 중지된 상태여야 함
+```bash
+irrecord -d /dev/lirc0 --disable-namespace -f ~/lircd.conf
+```
+- `--disable-namespace` : 각 키에 할당할 수 있는 lable의 리스트가 원래 정해져 있는데, 사용할 label을 직접 정의해서 사용하려고 하는 경우 추가. 원래 정의할 수 있는 label 리스트는 `irrecord --list-namespace` 로 조회 가능.
+
+3. samsung ac 인식
+- irrecord 대신에 mode2 사용해야함
+```
+sudo mode2 -m -d /dev/lirc0 > ~/lirc.conf
+```
+
 # 이슈
 - docker for mac clock skew
 ```
@@ -159,6 +187,8 @@ docker image에 ntp 설치해서 해결
 ### 해외
 - http://www.digikey.com/ -> 어디서 살 지 모르겠으면 여기서 사라
 - https://www.ti.com/ -> 학교 메일 있으면 샘플을 공짜로 받을 수 있었던 것으로 기억
+
+
 
 
 # 레퍼런스

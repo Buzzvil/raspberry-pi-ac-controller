@@ -64,6 +64,24 @@
     option: MODULES
     value: "\"lirc_rpi\""
 
-- name: restart lirc
+- name: copy lircd.conf
   become: yes
-  service: name=lirc state=restarted
+  template: src=lircd.conf dest=/etc/lirc/lircd.conf
+
+- name: Ensures /etc/lirc/conf.d/ dir exists
+  become: yes
+  file: path=/etc/lirc/conf.d/ state=directory
+
+- name: copy remote conf files
+  become: yes
+  template: src={{ item }} dest=/etc/lirc/conf.d/
+  with_fileglob:
+    - '../templates/conf.d/*'
+
+- name: stop lirc
+  become: yes
+  service: name=lirc state=stopped
+
+- name: start lirc
+  become: yes
+  service: name=lirc state=started
