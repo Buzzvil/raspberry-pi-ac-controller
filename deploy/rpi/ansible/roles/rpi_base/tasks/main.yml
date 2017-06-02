@@ -13,3 +13,4 @@
   apt: pkg={{ item }} state=installed
   with_items:
     - ntp
+    - vim

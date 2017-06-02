@@ -13,13 +13,13 @@
 - [ ] 캡쳐된 ir신호 발신기 conf 파일 셋업
 - [ ] irsend 이용해 에어컨 제어하기
 - [ ] 서버 셋업
-- [ ] 라즈베리파이 자동 검색 네트워크 구성
 - [X] ngrok을 활용한 고정 public ip 할당
 - [X] 도커 배포 환경 구축
 - [ ] 모든 배포 환경 자동화
 - [X] 만능 기판에 ir발신기 회로 구성
 - [X] 아마존 에코 연동
 - [ ] 슬랙으로 에어컨 켜고/끄기
+- [X] 3일 이상 켜놔도 문제없이 동작하는지 확인
 
 
 # 회로도
@@ -38,6 +38,7 @@ Download [fritzing file(.fzz)](air-conditioner.fzz)
 - USB 아답터 2.5A 이상
 - MLC SD card 16기가 -> Sandisk micro sd extreme 16GB 구매
 - [빵판 or 라즈베리파이 입출력키트](http://www.eleparts.co.kr/EPXDTWPM) - 귀찮으면 입출력키트 지르자
+- lirc에서 설정하는 gpio_in_pin 등의 번호는 pin 번호가 아닌 gpio 번호를 사용해야한다. 
 
 # 개발 환경
 
@@ -59,12 +60,22 @@ network={
   psk="YOUR_NETWORK_PASSWORD"
   key_mgmt=WPA-PSK
 }
+network={
+  ssid="YOUR_NETWORK_NAME2"
+  psk="YOUR_NETWORK_PASSWORD"
+  key_mgmt=WPA-PSK
+}
 ```
+- 실제로 SD카드에 올라가고 나면 /etc/wpa_supplicant/wpa_supplicant.conf 위치에서 같은 파일 찾을 수 있다 
 - [pi-baker](https://www.tweaking4all.com/software/macosx-software/macosx-apple-pi-baker/) 받아서 Restore Back으로 img파일 굽기
 - network에서 라즈베리파이 찾기
 ```
 which apr || brew install arp-scan
 arp -a | grep b8:27:eb | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+
+or
+which nmap || brew install nmap
+nmap -sn 192.168.1.0/24
 ```
 - ssh pi@xxx.xxx.xxx.xx with password raspberry
 
@@ -167,10 +178,12 @@ docker image에 ntp 설치해서 해결
 ## IR emitter 선택
 - 파장 940nm 짜리 필요
 - 발신 각도 넓은것으로 구매하자
-- 후보 http://www.vishay.com/ir-emitting-diodes/d
+- [IR333C] - 40도 짜리 그냥 싸고 적당한 제품
+- 마운팅 타입 후보 http://www.vishay.com/ir-emitting-diodes/d
 - [VSMB10940X01](http://www.vishay.com/ir-emitting-diodes/list/product-84216/)
 - [VSMY1940X01](http://www.vishay.com/ir-emitting-diodes/list/product-84214/)
 - [VSMY3940X01](http://www.vishay.com/ir-emitting-diodes/list/product-84220/)
+- [디지키](https://www.digikey.com/products/en/optoelectronics/infrared-uv-visible-emitters/94?k=ir+emitter&k=&pkeyword=ir+emitter&FV=a0000b%2C114016f%2C1140050%2Cffe0005e%2C89c0022%2C89c002d%2C89c0031&mnonly=0&newproducts=0&ColumnSort=0&page=1&stock=1&quantity=0&ptm=0&fid=0&pageSize=25)
 
 ## 라즈베리파이 운영체제 선택
 - Android things, Ubuntu Mate, Raspbian 등이 있는 것 같음
@@ -204,3 +217,18 @@ docker image에 ntp 설치해서 해결
 ## SD카드 구매
 - [라즈베리파이3 어떤 micro SD 메모리를 구입해야 하는가?](http://m.blog.naver.com/alkydes/220699946626)
 - [라즈베리파이 개론 - SD 카드 선택](http://nogada-lab.tistory.com/13)
+
+
+# Memo
+- https://pinout.xyz/ -> P01 == GPIO01 == BCM 01
+- 같은 네트웍에 여러 라즈베리파이 띄우면 호스트네임 충돌로 네트워크가 잘 안잡히는 것 같다
+sudo nano /etc/hostname
+sudo nano /etc/hosts
+raspberrypi 부분을 다른 hostname으로 바꾸자 
+/etc/init.d/hostname.sh
+sudo reboot
+
+
+sudo mode2 -m -d /dev/lirc0
+https://codebender.cc/library/Souliss#extras%2FSamsungMH026FB.cpp
+https://stackoverflow.com/questions/11863920/samsung-ir-codes-checksum?rq=1
