@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
+import os
+import socket
 
 import arrow
 import requests
@@ -27,4 +29,5 @@ def update_public_url():
         public_url=public_url,
         updated_at=arrow.utcnow().datetime,
         ttl=arrow.utcnow().shift(days=1).datetime,
+        hostname=os.environ.get('HOSTNAME') or socket.gethostname(),
     ).save()

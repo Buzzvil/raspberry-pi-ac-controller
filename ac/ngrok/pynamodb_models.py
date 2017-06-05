@@ -21,6 +21,7 @@ class PublicUrl(Model):
     public_url = UnicodeAttribute()
     updated_at = DateTimeAttribute()
     ttl = DateTimeAttribute()
+    hostname = UnicodeAttribute()
 
     class Meta:
         table_name = settings.DYNAMODB_DATABASES['TABLE_PREFIX'] + 'public_url'
