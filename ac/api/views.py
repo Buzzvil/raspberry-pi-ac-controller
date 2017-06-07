@@ -11,29 +11,39 @@ def hello(request):
 
 
 def ac_on(request):
-    call(["irsend", "SEND_ONCE", "lg-ac", "BTN_1"])
-    call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_1"])
+    lg = call(["irsend", "SEND_ONCE", "lg-ac", "BTN_1"])
+    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_1"])
+    if lg != 0 or samsung != 0:
+        return JsonResponse({'lg': lg, 'samsung': samsung}, status=500)
     return JsonResponse({})
 
 
 def ac_off(request):
-    call(["irsend", "SEND_ONCE", "lg-ac", "BTN_0"])
-    call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_0"])
+    lg = call(["irsend", "SEND_ONCE", "lg-ac", "BTN_0"])
+    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_0"])
+    if lg != 0 or samsung != 0:
+        return JsonResponse({'lg': lg, 'samsung': samsung}, status=500)
     return JsonResponse({})
 
 
 def ac_temp_up(request):
-    call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_UP"])
+    lg = call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_UP"])
+    if lg != 0:
+        return JsonResponse({'lg': lg}, status=500)
     return JsonResponse({})
 
 
 def ac_temp_down(request):
-    call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_DOWN"])
+    lg = call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_DOWN"])
+    if lg != 0:
+        return JsonResponse({'lg': lg}, status=500)
     return JsonResponse({})
 
 
 def light_on(request):
-    call(["irsend", "SEND_ONCE", "light", "KEY_ON"])
+    res = call(["irsend", "SEND_ONCE", "light", "KEY_ON"])
+    if res != 0:
+        return JsonResponse({'res': res}, status=500)
     return JsonResponse({})
 
 
@@ -41,5 +51,7 @@ def light_color(request, color):
     if not color in ('R', 'G', 'B'):
         return JsonResponse({'error': 'Invalid color'})
     keyname = "KEY_" + color
-    call(["irsend", "SEND_ONCE", "light", keyname])
+    res = call(["irsend", "SEND_ONCE", "light", keyname])
+    if res != 0:
+        return JsonResponse({'res': res}, status=500)
     return JsonResponse({})
