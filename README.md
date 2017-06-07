@@ -222,8 +222,8 @@ docker image에 ntp 설치해서 해결
 # Memo
 - https://pinout.xyz/ -> P01 == GPIO01 == BCM 01
 - 같은 네트웍에 여러 라즈베리파이 띄우면 호스트네임 충돌로 네트워크가 잘 안잡히는 것 같다
-sudo nano /etc/hostname
-sudo nano /etc/hosts
+sudo vi /etc/hostname
+sudo vi /etc/hosts
 raspberrypi 부분을 다른 hostname으로 바꾸자 
 /etc/init.d/hostname.sh
 sudo reboot

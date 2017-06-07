@@ -12,7 +12,7 @@ def hello(request):
 
 def ac_on(request):
     lg = call(["irsend", "SEND_ONCE", "lg-ac", "BTN_1"])
-    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_1"])
+    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_3"])
     if lg != 0 or samsung != 0:
         return JsonResponse({'lg': lg, 'samsung': samsung}, status=500)
     return JsonResponse({})
@@ -20,7 +20,7 @@ def ac_on(request):
 
 def ac_off(request):
     lg = call(["irsend", "SEND_ONCE", "lg-ac", "BTN_0"])
-    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_0"])
+    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_2"])
     if lg != 0 or samsung != 0:
         return JsonResponse({'lg': lg, 'samsung': samsung}, status=500)
     return JsonResponse({})
