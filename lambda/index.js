@@ -2,8 +2,10 @@
 var AWS = require("aws-sdk");
 var Alexa = require('alexa-sdk');
 var Promise = require('bluebird');
-var request = require('request-promise');
+var request = require('request');
 var qs = require('qs');
+
+Promise.promisifyAll(request);
 
 var APP_ID = undefined; //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 var SKILL_NAME = 'pi';
@@ -277,7 +279,7 @@ var sendRequest = function(floor, api) {
                 // send signal for all urls
                 var requestPromises = urls.map((url) => {
                     console.log('preparing request to ' + url);
-                    return request.get(url + api)
+                    return request.getAsync(url + api, {timeout: 10000}) 
                         .catch((error) => {
                             console.error('uh-oh! ' + error);
                             return false; // flag
@@ -289,10 +291,11 @@ var sendRequest = function(floor, api) {
             .then((responses) => {
                 var success = false;
                 responses.forEach(function(resp) {
-                    success = success || resp
+                    console.log('Response status code ' + resp.statusCode)
+                    success = success || resp.statusCode == 200
                 });
                 if (!success) {
-                    throw 'No device responded!';
+                    throw 'No device responded 200!';
                 }
                 return true;
             });
