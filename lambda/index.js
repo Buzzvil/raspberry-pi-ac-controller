@@ -1,5 +1,5 @@
 'use strict';
-var AWS = require("aws-sdk");
+var AWS = require('aws-sdk');
 var Alexa = require('alexa-sdk');
 var Promise = require('bluebird');
 var request = require('request');
@@ -7,7 +7,7 @@ var qs = require('qs');
 
 Promise.promisifyAll(request);
 
-var APP_ID = undefined; //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
+var APP_ID = undefined; //OPTIONAL: replace with 'amzn1.echo-sdk-ams.app.[your-unique-value-here]';
 var SKILL_NAME = 'pi';
 AWS.config.update({
   region: 'us-east-1',
@@ -23,6 +23,14 @@ exports.handler = function(event, context, callback) {
         return slackHandler(event.postBody, callback);
     }
     // alexa request
+    if (event.header.namespace == 'Alexa.ConnectedHome.Discovery') {
+        return handleDiscovery(event, callback);
+    }
+
+    if (event.header.namespace == 'Alexa.ConnectedHome.Control') {
+        return handleControl(event, callback);
+    }
+    // custom skill
     var alexa = Alexa.handler(event, context);
     alexa.APP_ID = APP_ID;
     alexa.registerHandlers(handlers);
@@ -117,8 +125,8 @@ var handlers = {
             });
     },
     'AMAZON.HelpIntent': function () {
-        var speechOutput = "You can say turn on AC, or, you can say exit... What can I help you with?";
-        var reprompt = "What can I help you with?";
+        var speechOutput = 'You can say turn on AC, or, you can say exit... What can I help you with?';
+        var reprompt = 'What can I help you with?';
         this.emit(':ask', speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function () {
@@ -257,7 +265,7 @@ var getUrl = function (location) {
         // continue scanning if we have more rows, because
         // scan can retrieve a maximum of 1MB of data
         if (typeof data.LastEvaluatedKey != 'undefined') {
-            console.log("Scanning for more...");
+            console.log('Scanning for more...');
             params.ExclusiveStartKey = data.LastEvaluatedKey;
             return docClient.scan(params).promise()
                 .then(onScan)
@@ -300,3 +308,98 @@ var sendRequest = function(floor, api) {
                 return true;
             });
 };
+
+var handleControl = function(event, callback) {
+    var device_id = event.payload.appliance.applianceId;
+    var message_id = event.header.messageId;
+    var header = {
+        'namespace':'Alexa.ConnectedHome.Control',
+        'payloadVersion':'2',
+        'messageId': message_id
+    };
+
+    if (event.header.name == 'TurnOnRequest') {
+        return sendRequest('3rd', '/api/ac/on/')
+            .then(() => {
+                header.name = 'TurnOnConfirmation';
+                callback(null, {
+                    'header': header,
+                    'payload': {}
+                });
+            })
+            .catch((error) => {
+                header.name = 'TargetOfflineError'
+                callback(null, {
+                    'header': header,
+                    'payload': {}
+                });
+                console.error('uh-oh! ' + error);
+            });;
+    }
+
+    if (event.header.name == 'TurnOffRequest') {
+        return sendRequest('3rd', '/api/ac/off/')
+            .then(() => {
+                header.name = 'TurnOffConfirmation';
+                callback(null, {
+                    'header': header,
+                    'payload': {}
+                });
+            })
+            .catch((error) => {
+                header.name = 'TargetOfflineError'
+                callback(null, {
+                    'header': header,
+                    'payload': {}
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+    // Unsupported Request
+    header.name = 'UnsupportedOperationError'
+    callback(null, {
+        'header': header,
+        'payload': {}
+    });
+}
+
+var handleDiscovery = function(event, callback) {
+    var header = {
+        'namespace': 'Alexa.ConnectedHome.Discovery',
+        'name': 'DiscoverAppliancesResponse',
+        'payloadVersion': '2'
+    };
+
+    if (event.header.name == 'DiscoverAppliancesRequest') {
+        payload = {
+            'discoveredAppliances':[
+                {
+                    'applianceId':'device002',
+                    'manufacturerName':'buzzvil',
+                    'modelName':'model 01',
+                    'version':'1',
+                    'friendlyName':'AC',
+                    'friendlyDescription':'Buzzvil 3rd floor AC',
+                    'isReachable':true,
+                    'actions':[
+                        'turnOn',
+                        'turnOff'
+                    ],
+                    'applianceTypes':[
+                        'THERMOSTAT'
+                    ],
+                    'additionalApplianceDetails':{
+                        'extraDetail1':'optionalDetailForSkillAdapterToReferenceThisDevice',
+                        'extraDetail2':'There can be multiple entries',
+                        'extraDetail3':'but they should only be used for reference purposes.',
+                        'extraDetail4':'This is not a suitable place to maintain current device state'
+                    }
+                }
+            ]
+        };
+    }
+    callback(null, {
+        'header': header,
+        'payload': payload || {}
+    });
+}
