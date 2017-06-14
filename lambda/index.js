@@ -182,11 +182,11 @@ var slackHandler = function(postBody, callback) {
             });
     }
 
-    if (body.command === '/achigh') {
-        return sendRequest('3rd', '/api/ac/temp/high')
+    if (body.command === '/accool') {
+        return sendRequest('3rd', '/api/ac/temp/low')
             .then(() => {
                 callback(null, {
-                    text: 'All 3rd floor AC are *set to high*!',
+                    text: 'All 3rd floor AC are *set to cool*!',
                     response_type: defaultSlackResponseType,
                 });
             })
@@ -199,11 +199,11 @@ var slackHandler = function(postBody, callback) {
             });
     }
 
-    if (body.command === '/aclow') {
-        return sendRequest('3rd', '/api/ac/temp/low')
+    if (body.command === '/acwarm') {
+        return sendRequest('3rd', '/api/ac/temp/high')
             .then(() => {
                 callback(null, {
-                    text: 'All 3rd floor AC are *set to low*!',
+                    text: 'All 3rd floor AC are *set to warm*!',
                     response_type: defaultSlackResponseType,
                 });
             })
@@ -409,9 +409,9 @@ var handleControl = function(event, callback) {
 
     if (event.header.name == 'SetTargetTemperatureRequest') {
         var tempValue = event.payload.targetTemperature.value;
-        var temp = 'low';
+        var temp = 'high';
         if (tempValue < 19) {
-            temp = 'high';
+            temp = 'low';
         } else if (tempValue < 25) {
             temp = 'medium';
         }
