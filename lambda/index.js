@@ -182,6 +182,57 @@ var slackHandler = function(postBody, callback) {
             });
     }
 
+    if (body.command === '/achigh') {
+        return sendRequest('3rd', '/api/ac/temp/high')
+            .then(() => {
+                callback(null, {
+                    text: 'All 3rd floor AC are *set to high*!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
+    if (body.command === '/aclow') {
+        return sendRequest('3rd', '/api/ac/temp/low')
+            .then(() => {
+                callback(null, {
+                    text: 'All 3rd floor AC are *set to low*!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
+    if (body.command === '/acmedium') {
+        return sendRequest('3rd', '/api/ac/temp/medium')
+            .then(() => {
+                callback(null, {
+                    text: 'All 3rd floor AC are *set to medium*!',
+                    response_type: defaultSlackResponseType,
+                });
+            })
+            .catch((error) => {
+                callback(null, {
+                    text: 'Sorry, Something went wrong',
+                    response_type: defaultSlackResponseType,
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
+
     if (body.command === '/lighton') {
         return sendRequest('3rd', '/api/light/on/')
             .then(() => {
@@ -355,6 +406,47 @@ var handleControl = function(event, callback) {
                 console.error('uh-oh! ' + error);
             });
     }
+
+    if (event.header.name == 'SetTargetTemperatureRequest') {
+        var tempValue = event.payload.targetTemperature.value;
+        var temp = 'low';
+        if (tempValue < 19) {
+            temp = 'high';
+        } else if (tempValue < 25) {
+            temp = 'medium';
+        }
+        return sendRequest('3rd', '/api/ac/temp/' + temp)
+            .then(() => {
+                header.name = 'SetTargetTemperatureConfirmation';
+                callback(null, {
+                    'header': header,
+                    'payload': {
+                        'targetTemperature': {
+                            'value': tempValue
+                        },
+                        'temperatureMode': {
+                            'value':'AUTO'
+                        },
+                        'previousState': {
+                            'targetTemperature': {
+                                'value': 21.0
+                            },
+                            'mode': {
+                                'value': 'AUTO'
+                            }
+                        }
+                    }
+                });
+            })
+            .catch((error) => {
+                header.name = 'TargetOfflineError'
+                callback(null, {
+                    'header': header,
+                    'payload': {}
+                });
+                console.error('uh-oh! ' + error);
+            });
+    }
     // Unsupported Request
     header.name = 'UnsupportedOperationError'
     callback(null, {
@@ -383,7 +475,8 @@ var handleDiscovery = function(event, callback) {
                     'isReachable':true,
                     'actions':[
                         'turnOn',
-                        'turnOff'
+                        'turnOff',
+                        'setTargetTemperature'
                     ],
                     'applianceTypes':[
                         'THERMOSTAT'
