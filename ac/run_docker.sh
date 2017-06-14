@@ -5,9 +5,9 @@ set -ex
 #docker rename ac ac-$(date +"%F-%T") || true
 
 # Run docker
-#	-v /var/run/lirc/lircd:/var/run/lirc/lircd \
 docker run \
     -d \
+    -v /var/run/lirc/lircd:/var/run/lirc/lircd \
     -e AC_LOCATION="3rd" \
     -e AWS_ACCESS_KEY_ID="" \
     -e AWS_SECRET_ACCESS_KEY="" \

@@ -218,6 +218,14 @@ docker image에 ntp 설치해서 해결
 - [라즈베리파이3 어떤 micro SD 메모리를 구입해야 하는가?](http://m.blog.naver.com/alkydes/220699946626)
 - [라즈베리파이 개론 - SD 카드 선택](http://nogada-lab.tistory.com/13)
 
+## Alexa
+- [Steps to Create a Smart Home Skill](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/steps-to-create-a-smart-home-skill)
+- [Linking an Alexa User with a User in Your System](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/linking-an-alexa-user-with-a-user-in-your-system)
+- [Smart Home Skill API Reference](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/smart-home-skill-api-reference)
+- [A quick OAuth example using Alexa to connect to Facebook](http://matchboxmobile.com/blog/oauth-using-alexa/)
+
+
+
 
 # Memo
 - https://pinout.xyz/ -> P01 == GPIO01 == BCM 01

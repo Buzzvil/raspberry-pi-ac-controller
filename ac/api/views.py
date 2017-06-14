@@ -1,8 +1,15 @@
 from subprocess import call
-from django.http import JsonResponse
 
+import logging
+from django.http import JsonResponse
+from django.utils import six
+
+from ac import settings
+from api.pynamodb_models import ACConfig
 from ngrok.tasks import update_public_url
 
+
+logger = logging.getLogger(__name__)
 
 def hello(request):
     update_public_url.delay()
@@ -10,49 +17,41 @@ def hello(request):
     return JsonResponse(res_dict)
 
 
-def ac_on(request):
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", "BTN_1"])
-    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_3"])
+def ac_command(btn_name):
+    lg = call(["irsend", "SEND_ONCE", "lg-ac", btn_name])
+    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", btn_name])
     if lg != 0 or samsung != 0:
         return JsonResponse({'lg': lg, 'samsung': samsung}, status=500)
     return JsonResponse({})
+
+
+def ac_on(request):
+    STATE_BTN_MAP = {
+        'low': 'BTN_3',
+        'medium': 'BTN_5',
+        'high': 'BTN_7',
+    }
+
+    config = six.next(ACConfig.query(hash_key=settings.AC_LOCATION))
+    btn_name = STATE_BTN_MAP[config.state]
+    logger.info('ac_on state {} btn_name {}'.format(config.state, btn_name))
+    return ac_command(btn_name)
 
 
 def ac_off(request):
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", "BTN_0"])
-    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", "BTN_2"])
-    if lg != 0 or samsung != 0:
-        return JsonResponse({'lg': lg, 'samsung': samsung}, status=500)
-    return JsonResponse({})
-
-
-def ac_temp_up(request):
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_UP"])
-    if lg != 0:
-        return JsonResponse({'lg': lg}, status=500)
-    return JsonResponse({})
-
-
-def ac_temp_down(request):
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_DOWN"])
-    if lg != 0:
-        return JsonResponse({'lg': lg}, status=500)
-    return JsonResponse({})
+    return ac_command("BTN_0")
 
 
 def ac_temp_low(request):
-    # TODO
-    return JsonResponse({})
+    return ac_command("BTN_3")
 
 
 def ac_temp_medium(request):
-    # TODO
-    return JsonResponse({})
+    return ac_command("BTN_5")
 
 
 def ac_temp_high(request):
-    # TODO
-    return JsonResponse({})
+    return ac_command("BTN_7")
 
 
 def light_on(request):
