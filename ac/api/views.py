@@ -42,25 +42,16 @@ def ac_temp_down(request):
 
 def ac_temp_low(request):
     # TODO
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_UP"])
-    if lg != 0:
-        return JsonResponse({'lg': lg}, status=500)
     return JsonResponse({})
 
 
 def ac_temp_medium(request):
     # TODO
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_UP"])
-    if lg != 0:
-        return JsonResponse({'lg': lg}, status=500)
     return JsonResponse({})
 
 
 def ac_temp_high(request):
     # TODO
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", "KEY_TEMP_UP"])
-    if lg != 0:
-        return JsonResponse({'lg': lg}, status=500)
     return JsonResponse({})
 
 
