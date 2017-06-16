@@ -185,6 +185,9 @@ var slackHandler = function(postBody, callback) {
     if (body.command === '/accool') {
         return sendRequest('3rd', '/api/ac/temp/low')
             .then(() => {
+                return saveState('3rd', 'low');
+            })
+            .then(() => {
                 callback(null, {
                     text: 'All 3rd floor AC are *set to cool*!',
                     response_type: defaultSlackResponseType,
@@ -202,6 +205,9 @@ var slackHandler = function(postBody, callback) {
     if (body.command === '/acwarm') {
         return sendRequest('3rd', '/api/ac/temp/high')
             .then(() => {
+                return saveState('3rd', 'high');
+            })
+            .then(() => {
                 callback(null, {
                     text: 'All 3rd floor AC are *set to warm*!',
                     response_type: defaultSlackResponseType,
@@ -218,6 +224,9 @@ var slackHandler = function(postBody, callback) {
 
     if (body.command === '/acmedium') {
         return sendRequest('3rd', '/api/ac/temp/medium')
+            .then(() => {
+                return saveState('3rd', 'medium');
+            })
             .then(() => {
                 callback(null, {
                     text: 'All 3rd floor AC are *set to medium*!',
@@ -332,6 +341,26 @@ var getUrl = function (location) {
         .then(onScan);
 };
 
+var saveState = function (location, state) {
+    var params = {
+        TableName : 'prod_ac_config',
+        Key: { location : location },
+        UpdateExpression: 'set #a = :x',
+        ExpressionAttributeNames: {'#a' : 'state'},
+        ExpressionAttributeValues: {
+            ':x' : state,
+        }
+    };
+
+    var onUpdate = function (data) {
+        console.log('State saved.' + data);
+        return true;
+    };
+
+    return docClient.update(params).promise()
+        .then(onUpdate);
+};
+
 var sendRequest = function(floor, api) {
     return getUrl(floor)
             .then((urls) => {
@@ -416,6 +445,9 @@ var handleControl = function(event, callback) {
             temp = 'medium';
         }
         return sendRequest('3rd', '/api/ac/temp/' + temp)
+            .then(() => {
+                return saveState('3rd', temp);
+            })
             .then(() => {
                 header.name = 'SetTargetTemperatureConfirmation';
                 callback(null, {
