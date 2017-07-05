@@ -79,12 +79,12 @@ nmap -sn 192.168.1.0/24
 ```
 - ssh pi@xxx.xxx.xxx.xx with password raspberry
 
-- sudo raspi-config 실행해서 ssh 비번 바꾸기 
-- ~/.ssh/authorized_keys 에 public key 넣어놓기
+- sudo raspi-config 실행해서 ssh 비번 바꾸기
+- mkdir ~/.ssh -> vi ~/.ssh/authorized_keys 실행해서 public key 넣어놓기
 - ansible로 필요한것들 설치
 ```bash
 cd deploy/rpi/ansible
-ansible-playbook --ask-pass -i hosts setup_rpi.yml
+ansible-playbook -i hosts setup_rpi.yml
 ```
 
 ## Docker
