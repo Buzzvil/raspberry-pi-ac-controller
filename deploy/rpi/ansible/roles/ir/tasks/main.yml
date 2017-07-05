@@ -13,6 +13,15 @@
     option: dtoverlay
     value: "lirc-rpi,gpio_in_pin={{ gpio_in_pin }},gpio_out_pin={{ gpio_out_pin }}"
 
+- name: /boot/config.txt
+  become: yes
+  ini_file:
+    path: /boot/config.txt
+    no_extra_spaces: yes
+    section: null
+    option: dtparam
+    value: "i2c_arm=on"
+
 - name: /etc/modules
   become: yes
   lineinfile:
@@ -27,6 +36,13 @@
     regexp: "^lirc_rpi"
     insertafter: "^lirc_dev"
     line: "lirc_rpi gpio_in_pin={{ gpio_in_pin }} gpio_out_pin={{ gpio_out_pin }}"
+
+- name: /etc/modules
+  become: yes
+  lineinfile:
+    path: /etc/modules
+    regexp: "^i2c-dev"
+    line: "i2c-dev"
 
 - name: /etc/lirc/hardware.conf
   become: yes
