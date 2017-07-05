@@ -9,3 +9,15 @@ pip-tools==1.9.0
 pynamodb==2.1.5
 requests==2.13.0
 virtualenvwrapper==4.7.2
+
+# Tests
+factory-boy==2.8.1
+faker==0.7.7
+flake8==3.3.0
+pytest==3.1.1
+pytest-cov==2.5.1
+pytest-django==3.1.2
+mock==2.0.0
+pytest-mock==1.6.0
+requests-mock==1.3.0
+moto==1.0.0
