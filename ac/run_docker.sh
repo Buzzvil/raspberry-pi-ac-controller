@@ -6,6 +6,7 @@ set -ex
 
 # Run docker
 docker run \
+    --device=/dev/i2c-1 \
     -d \
     -v /var/run/lirc/lircd:/var/run/lirc/lircd \
     -e AC_LOCATION="3rd" \
