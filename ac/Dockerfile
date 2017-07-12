@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     lirc \
     ntp \
-    python-smbus \
     i2c-tools \
  && rm -rf /var/lib/apt/lists/*
 

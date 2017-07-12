@@ -9,6 +9,7 @@ pip-tools==1.9.0
 pynamodb==2.1.5
 requests==2.13.0
 virtualenvwrapper==4.7.2
+smbus-cffi==0.5.1
 
 # Tests
 factory-boy==2.8.1
