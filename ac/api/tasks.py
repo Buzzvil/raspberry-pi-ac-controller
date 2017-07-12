@@ -6,7 +6,7 @@ from api.utils import LightSensor
 
 logger = logging.getLogger(__name__)
 
-THRESHOLD_LIGHT_LEVEL = 10
+THRESHOLD_LIGHT_LEVEL = 5
 WINDOW_RANGE = 100
 MIN_COUNT = 70
 

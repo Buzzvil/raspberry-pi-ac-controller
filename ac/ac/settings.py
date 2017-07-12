@@ -140,7 +140,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'check_light': {
         'task': 'api.tasks.check_light',
-        'schedule': timedelta(seconds=3),
+        'schedule': timedelta(seconds=5),
     }
 }
 
