@@ -138,6 +138,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'ngrok.tasks.update_public_url',
         'schedule': timedelta(seconds=5),
     },
+    'check_light': {
+        'task': 'api.tasks.check_light',
+        'schedule': timedelta(seconds=3),
+    }
 }
 
 CELERY_TIMEZONE = 'UTC'
