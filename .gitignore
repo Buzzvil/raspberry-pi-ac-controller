@@ -1,6 +1,7 @@
 ac/.idea/*
 *.sqlite3
 *.pyc
+.coverage
 
 # celerybeat
 ac/celerybeat.pid
