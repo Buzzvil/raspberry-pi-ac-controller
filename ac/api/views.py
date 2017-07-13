@@ -1,6 +1,6 @@
-from subprocess import call
-
 import logging
+
+import subprocess
 from django.http import JsonResponse
 from django.utils import six
 
@@ -18,8 +18,8 @@ def hello(request):
 
 
 def ac_command(btn_name):
-    lg = call(["irsend", "SEND_ONCE", "lg-ac", btn_name])
-    samsung = call(["irsend", "SEND_ONCE", "samsung-ac", btn_name])
+    lg = subprocess.call(["irsend", "SEND_ONCE", "lg-ac", btn_name])
+    samsung = subprocess.call(["irsend", "SEND_ONCE", "samsung-ac", btn_name])
     if lg != 0 or samsung != 0:
         return JsonResponse({'lg': lg, 'samsung': samsung}, status=500)
     return JsonResponse({})
@@ -55,7 +55,7 @@ def ac_temp_high(request):
 
 
 def light_on(request):
-    res = call(["irsend", "SEND_ONCE", "light", "KEY_ON"])
+    res = subprocess.call(["irsend", "SEND_ONCE", "light", "KEY_ON"])
     if res != 0:
         return JsonResponse({'res': res}, status=500)
     return JsonResponse({})
@@ -65,7 +65,7 @@ def light_color(request, color):
     if not color in ('R', 'G', 'B'):
         return JsonResponse({'error': 'Invalid color'})
     keyname = "KEY_" + color
-    res = call(["irsend", "SEND_ONCE", "light", keyname])
+    res = subprocess.call(["irsend", "SEND_ONCE", "light", keyname])
     if res != 0:
         return JsonResponse({'res': res}, status=500)
     return JsonResponse({})
