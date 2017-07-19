@@ -5,6 +5,9 @@ from smbus import SMBus
 logger = logging.getLogger(__name__)
 
 
+class PhotoSensorNotFound(Exception):
+    pass
+
 class LightSensor(object):
 
     I2C_BUS_ID = 1  # Default: 1 for RPI 2, RPI 3
@@ -34,9 +37,9 @@ class LightSensor(object):
             data = self.bus.read_i2c_block_data(LightSensor.DEVICE, LightSensor.ONE_TIME_HIGH_RES_MODE_1)
             return LightSensor.convert_to_number(data)
         except OSError as e:
-            logger.info('OSError catched')
+            logger.info('PhotoSensorNotFound: OSError catched ')
             # TODO : photo sensor 연결 오류 찾아내는 방법 알아보기
-            return -1
+            raise PhotoSensorNotFound()
 
     @staticmethod
     def convert_to_number(data):

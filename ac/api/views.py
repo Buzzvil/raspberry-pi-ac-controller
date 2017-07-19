@@ -27,9 +27,10 @@ def ac_command(btn_name):
 
 def ac_on(request):
     STATE_BTN_MAP = {
-        'low': 'BTN_3',
-        'medium': 'BTN_5',
-        'high': 'BTN_7',
+        'verylow': 'BTN_3',
+        'low': 'BTN_5',
+        'medium': 'BTN_8',
+        'high': 'BTN_10',
     }
 
     config = six.next(ACConfig.query(hash_key=settings.AC_LOCATION))
