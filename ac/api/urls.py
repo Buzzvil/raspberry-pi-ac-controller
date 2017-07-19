@@ -7,6 +7,7 @@ urlpatterns = [
     # Air conditioner
     url(r'^ac/on/', views.ac_on, name='ac_on'),
     url(r'^ac/off/', views.ac_off, name='ac_off'),
+    url(r'^ac/temp/verylow', views.ac_temp_very_low),
     url(r'^ac/temp/low', views.ac_temp_low),
     url(r'^ac/temp/medium', views.ac_temp_medium),
     url(r'^ac/temp/high', views.ac_temp_high),

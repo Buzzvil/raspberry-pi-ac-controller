@@ -41,17 +41,17 @@ def ac_on(request):
 def ac_off(request):
     return ac_command("BTN_0")
 
-
-def ac_temp_low(request):
+def ac_temp_very_low(request):
     return ac_command("BTN_3")
 
-
-def ac_temp_medium(request):
+def ac_temp_low(request):
     return ac_command("BTN_5")
 
+def ac_temp_medium(request):
+    return ac_command("BTN_8")
 
 def ac_temp_high(request):
-    return ac_command("BTN_7")
+    return ac_command("BTN_10")
 
 
 def light_on(request):

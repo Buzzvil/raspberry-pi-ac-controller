@@ -110,7 +110,7 @@ sshfs pi@192.168.0.109: pi
 1. IR receiver 와 lirc 간 연계 테스트 : 셋업해 둔 IR receiver 가 lirc 로 정상적으로 IR 신호를 전달하고 있는지 확인용.
 
 ```bash
-/etc/init.d/lirc stop // lirc deamon 중단
+sudo /etc/init.d/lirc stop // lirc deamon 중단
 mode2 -d /dev/lirc0
 ```
 
