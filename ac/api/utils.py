@@ -33,8 +33,9 @@ class LightSensor(object):
         try:
             data = self.bus.read_i2c_block_data(LightSensor.DEVICE, LightSensor.ONE_TIME_HIGH_RES_MODE_1)
             return LightSensor.convert_to_number(data)
-        except Exception as e:
-            logger.info(e.message)
+        except OSError as e:
+            logger.info('OSError catched')
+            # TODO : photo sensor 연결 오류 찾아내는 방법 알아보기
             return -1
 
     @staticmethod
