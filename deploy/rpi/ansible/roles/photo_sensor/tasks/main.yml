@@ -1,0 +1,21 @@
+- name: install i2c-tools
+  become: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - i2c-tools
+
+- name: /boot/config.txt
+  become: yes
+  ini_file:
+    path: /boot/config.txt
+    no_extra_spaces: yes
+    section: null
+    option: dtparam
+    value: "i2c_arm=on"
+
+- name: /etc/modules
+  become: yes
+  lineinfile:
+    path: /etc/modules
+    regexp: "^i2c-dev"
+    line: "i2c-dev"

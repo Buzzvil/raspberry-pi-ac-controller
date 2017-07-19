@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
 import logging
+import os
+
+import requests
 from celery import shared_task
 
 from api.utils import LightSensor
@@ -24,6 +27,9 @@ def check_light():
 
     if count > MIN_COUNT:
         logger.info('Light is off - Turn off the AC (count : {0}/{1})'.format(count, WINDOW_RANGE))
-        # TODO : turn off the AC
+        requests.post('https://za4ekgzk6b.execute-api.us-east-1.amazonaws.com/Prod/slack', {
+            'token': os.environ['SLACK_TOKEN'],
+            'command': '/acoff'
+        })
     else:
         logger.info('Light is on')
