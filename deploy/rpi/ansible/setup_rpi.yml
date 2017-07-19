@@ -5,7 +5,7 @@
 
   roles:
   - {role: rpi_base}
+  - {role: docker}
   - {role: ir, gpio_in_pin: 15, gpio_out_pin: 14}
   - {role: photo_sensor}
-  - {role: docker}
-  - {role: ac, AC_LOCATION: 3rd, AWS_ACCESS_KEY_ID: , AWS_SECRET_ACCESS_KEY: , SLACK_TOKEN: }
+  - {role: ac, AC_LOCATION: , AWS_ACCESS_KEY_ID: , AWS_SECRET_ACCESS_KEY: , SLACK_TOKEN: , SLACK_URL: }

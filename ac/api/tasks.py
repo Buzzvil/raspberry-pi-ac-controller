@@ -31,7 +31,7 @@ def check_light():
         logger.info('Light is off - Turn off the AC (count : {0}/{1})'.format(count, WINDOW_RANGE))
 
         if light_status.is_light_on:
-            requests.post('https://za4ekgzk6b.execute-api.us-east-1.amazonaws.com/Prod/slack', {
+            requests.post(os.environ['SLACK_URL'], {
                 'token': os.environ['SLACK_TOKEN'],
                 'command': '/acoff',
             }, timeout=30)

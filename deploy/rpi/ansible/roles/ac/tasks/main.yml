@@ -3,5 +3,5 @@
   template: src=master_env.sh dest=/master_env.sh
 
 - name: Setup Air-conditioner controller application
-  script: "docker.sh {{ AC_LOCATION }} {{ AWS_ACCESS_KEY_ID }} {{ AWS_SECRET_ACCESS_KEY }} {{ SLACK_TOKEN }}"
+  script: "docker.sh"
   become: yes
