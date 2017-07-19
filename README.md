@@ -240,3 +240,4 @@ sudo reboot
 sudo mode2 -m -d /dev/lirc0
 https://codebender.cc/library/Souliss#extras%2FSamsungMH026FB.cpp
 https://stackoverflow.com/questions/11863920/samsung-ir-codes-checksum?rq=1
+라즈베리파이 안에서 docker image 받자마자 전원 뽑으면 disk에 이미지가 완전히 flush되지 못하는 경우가 생겨서 이미지가 깨져 실행이 안되는 경우가 있으니 주의.

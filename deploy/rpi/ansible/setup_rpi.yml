@@ -1,7 +1,7 @@
 ---
 - name: Setup raspberry pi
   hosts: all
-  gather_facts: false
+  gather_facts: true
 
   roles:
   - {role: rpi_base}
