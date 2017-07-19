@@ -136,7 +136,7 @@ ALLOWED_HOSTS = ['*']
 CELERYBEAT_SCHEDULE = {
     'update_public_url': {
         'task': 'ngrok.tasks.update_public_url',
-        'schedule': timedelta(seconds=5),
+        'schedule': timedelta(seconds=10),
     },
     'check_light': {
         'task': 'api.tasks.check_light',

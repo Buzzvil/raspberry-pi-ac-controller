@@ -4,10 +4,9 @@ set -ex
 docker pull buzzvil/ac
 docker run \
 	-d \
-	-e AC_LOCATION=$1 \
-    -e AWS_ACCESS_KEY_ID=$2 \
-	-e AWS_SECRET_ACCESS_KEY=$3 \
-	-e HOSTNAME="`hostname | xargs echo -n`" \
+	-v /master_env.sh:/master_env.sh:ro \
+    -v /var/run/lirc/lircd:/var/run/lirc/lircd:ro \
+    --device=/dev/i2c-1 \
 	-p 8833:8833 \
 	--restart always \
 	--name ac \
