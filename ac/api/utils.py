@@ -32,7 +32,7 @@ class LightSensor(object):
     def __init__(self):
         self.bus = SMBus(LightSensor.I2C_BUS_ID)
 
-    def read_light(self):
+    def _read_light(self):
         try:
             data = self.bus.read_i2c_block_data(LightSensor.DEVICE, LightSensor.ONE_TIME_HIGH_RES_MODE_1)
             return LightSensor.convert_to_number(data)
@@ -40,6 +40,23 @@ class LightSensor(object):
             logger.info('PhotoSensorNotFound: OSError catched ')
             # TODO : photo sensor 연결 오류 찾아내는 방법 알아보기
             raise PhotoSensorNotFound()
+
+    def is_light_on(self):
+        THRESHOLD_LIGHT_LEVEL = 5
+        WINDOW_RANGE = 100
+        MIN_COUNT = 70
+
+        count = 0
+        for _ in range(WINDOW_RANGE):
+            try:
+                light_level = self._read_light()
+            except PhotoSensorNotFound:
+                return
+
+            if light_level < THRESHOLD_LIGHT_LEVEL:
+                count += 1
+
+        return count > MIN_COUNT
 
     @staticmethod
     def convert_to_number(data):
