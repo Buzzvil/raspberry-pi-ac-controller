@@ -30,7 +30,7 @@ def ac_on(request):
         'verylow': 'BTN_3',
         'low': 'BTN_6',
         'medium': 'BTN_9',
-        'high': 'BTN_12',
+        'high': 'BTN_11',
     }
 
     config = six.next(ACConfig.query(hash_key=settings.AC_LOCATION))
@@ -52,7 +52,7 @@ def ac_temp_medium(request):
     return ac_command("BTN_9")
 
 def ac_temp_high(request):
-    return ac_command("BTN_12")
+    return ac_command("BTN_11")
 
 
 def light_on(request):

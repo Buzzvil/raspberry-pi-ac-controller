@@ -9,5 +9,7 @@ docker run \
     --device=/dev/i2c-1 \
     -p 8833:8833 \
     --restart always \
+    --log-opt max-size=10m \
+    --log-opt max-file=10 \
     --name ac \
-    buzzvil/ac
+    buzzvil/ac:2018-06-05

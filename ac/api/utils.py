@@ -51,7 +51,7 @@ class LightSensor(object):
             try:
                 light_level = self._read_light()
             except PhotoSensorNotFound:
-                return
+                return False
 
             if light_level < THRESHOLD_LIGHT_LEVEL:
                 count += 1
