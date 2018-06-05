@@ -26,15 +26,15 @@ def ac_command(btn_name):
 
 
 def ac_on(request):
-    STATE_BTN_MAP = {
+    state_button_map = {
         'verylow': 'BTN_3',
-        'low': 'BTN_5',
-        'medium': 'BTN_8',
-        'high': 'BTN_10',
+        'low': 'BTN_6',
+        'medium': 'BTN_9',
+        'high': 'BTN_12',
     }
 
     config = six.next(ACConfig.query(hash_key=settings.AC_LOCATION))
-    btn_name = STATE_BTN_MAP[config.state]
+    btn_name = state_button_map[config.state]
     logger.info('ac_on state {} btn_name {}'.format(config.state, btn_name))
     return ac_command(btn_name)
 
@@ -46,13 +46,13 @@ def ac_temp_very_low(request):
     return ac_command("BTN_3")
 
 def ac_temp_low(request):
-    return ac_command("BTN_5")
+    return ac_command("BTN_6")
 
 def ac_temp_medium(request):
-    return ac_command("BTN_8")
+    return ac_command("BTN_9")
 
 def ac_temp_high(request):
-    return ac_command("BTN_10")
+    return ac_command("BTN_12")
 
 
 def light_on(request):
