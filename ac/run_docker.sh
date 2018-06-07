@@ -12,4 +12,4 @@ docker run \
     --log-opt max-size=10m \
     --log-opt max-file=10 \
     --name ac \
-    buzzvil/ac:2018-06-05
+    buzzvil/ac:2018-06-07
