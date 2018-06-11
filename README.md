@@ -59,17 +59,22 @@ sudo touch /Volumes/boot/ssh
 sudo vi /Volumes/boot/wpa_supplicant.conf
 ```
 ```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=US
 network={
-  ssid="YOUR_NETWORK_NAME"
-  psk="YOUR_NETWORK_PASSWORD"
-  key_mgmt=WPA-PSK
+    ssid="ESSID"
+    psk="Your_wifi_password"
+    priority=1
 }
 network={
-  ssid="YOUR_NETWORK_NAME2"
-  psk="YOUR_NETWORK_PASSWORD"
-  key_mgmt=WPA-PSK
+    ssid="ESSID"
+    psk="Your_wifi_password"
+    priority=2
+    scan_ssid=1
 }
 ```
+- scan_ssid -> hidden ssid인 경우 필요
 - 실제로 SD카드에 올라가고 나면 /etc/wpa_supplicant/wpa_supplicant.conf 위치에서 같은 파일 찾을 수 있다 
 - [pi-baker](https://www.tweaking4all.com/software/macosx-software/macosx-apple-pi-baker/) 받아서 Restore Back으로 img파일 굽기
 - network에서 라즈베리파이 찾기
@@ -88,7 +93,7 @@ nmap -sn 192.168.1.0/24
 - ansible로 필요한것들 설치
 ```bash
 cd deploy/rpi/ansible
-ansible-playbook -i hosts setup_rpi.yml
+ansible-playbook -i pi@192.168.0.113, setup_rpi.yml
 ```
 
 ## Docker
@@ -237,7 +242,6 @@ docker image에 ntp 설치해서 해결
 sudo vi /etc/hostname
 sudo vi /etc/hosts
 raspberrypi 부분을 다른 hostname으로 바꾸자 
-/etc/init.d/hostname.sh
 sudo reboot
 
 

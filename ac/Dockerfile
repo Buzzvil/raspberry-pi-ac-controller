@@ -24,7 +24,7 @@ RUN cd /tmp \
 COPY requirements.txt /
 RUN pip install -r requirements.txt --no-cache-dir
 
-RUN crontab -l | { cat; echo "0 20 * * * /usr/bin/supervisorctl -s unix:///tmp/supervisor.sock restart ngrok"; } | crontab -
+RUN crontab -l | { cat; echo "0 7,15,23 * * * /usr/bin/supervisorctl -s unix:///tmp/supervisor.sock restart ngrok"; } | crontab -
 
 COPY supervisord.conf /etc/supervisor/conf.d/
 COPY . /ac
