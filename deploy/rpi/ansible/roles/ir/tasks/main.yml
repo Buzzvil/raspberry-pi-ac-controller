@@ -1,6 +1,6 @@
 - name: install lirc
   become: yes
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }} state=present
   with_items:
     - lirc
 
@@ -13,75 +13,32 @@
     option: dtoverlay
     value: "lirc-rpi,gpio_in_pin={{ gpio_in_pin }},gpio_out_pin={{ gpio_out_pin }}"
 
-- name: /etc/modules
-  become: yes
-  lineinfile:
-    path: /etc/modules
-    regexp: "^lirc_dev"
-    line: "lirc_dev"
-
-- name: /etc/modules
-  become: yes
-  lineinfile:
-    path: /etc/modules
-    regexp: "^lirc_rpi"
-    insertafter: "^lirc_dev"
-    line: "lirc_rpi gpio_in_pin={{ gpio_in_pin }} gpio_out_pin={{ gpio_out_pin }}"
-
-- name: /etc/lirc/hardware.conf
+- name: /etc/lirc/lirc_options.conf
   become: yes
   ini_file:
-    path: /etc/lirc/hardware.conf
-    no_extra_spaces: yes
-    section: null
-    option: LIRCD_ARGS
-    value: "\"--uinput\""
+    path: /etc/lirc/lirc_options.conf
+    section: lircd
+    option: driver
+    value: "default"
 
-- name: /etc/lirc/hardware.conf
+- name: /etc/lirc/lirc_options.conf
   become: yes
   ini_file:
-    path: /etc/lirc/hardware.conf
-    no_extra_spaces: yes
-    section: null
-    option: DRIVER
-    value: "\"default\""
-
-- name: /etc/lirc/hardware.conf
-  become: yes
-  ini_file:
-    path: /etc/lirc/hardware.conf
-    no_extra_spaces: yes
-    section: null
-    option: DEVICE
-    value: "\"/dev/lirc0\""
-
-- name: /etc/lirc/hardware.conf
-  become: yes
-  ini_file:
-    path: /etc/lirc/hardware.conf
-    no_extra_spaces: yes
-    section: null
-    option: MODULES
-    value: "\"lirc_rpi\""
-
-- name: copy lircd.conf
-  become: yes
-  template: src=lircd.conf dest=/etc/lirc/lircd.conf
-
-- name: Ensures /etc/lirc/conf.d/ dir exists
-  become: yes
-  file: path=/etc/lirc/conf.d/ state=directory
+    path: /etc/lirc/lirc_options.conf
+    section: lircd
+    option: device
+    value: "/dev/lirc0"
 
 - name: copy remote conf files
   become: yes
-  template: src={{ item }} dest=/etc/lirc/conf.d/
+  template: src={{ item }} dest=/etc/lirc/lircd.conf.d
   with_fileglob:
     - '../templates/conf.d/*'
 
-- name: stop lirc
+- name: stop lircd
   become: yes
-  service: name=lirc state=stopped
+  service: name=lircd state=stopped
 
-- name: start lirc
+- name: start lircd
   become: yes
-  service: name=lirc state=started
+  service: name=lircd state=started

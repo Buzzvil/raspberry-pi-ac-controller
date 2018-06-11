@@ -1,6 +1,6 @@
 - name: install i2c-tools
   become: yes
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }} state=present
   with_items:
     - i2c-tools
 

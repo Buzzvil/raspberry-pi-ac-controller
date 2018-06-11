@@ -3,14 +3,9 @@
   become: yes
   apt: update_cache=yes cache_valid_time=3600
 
-- name: Update all packages to the latest version
-  become: yes
-  apt:
-    upgrade: yes
-
 - name: install default packages
   become: yes
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }} state=present
   with_items:
     - ntp
     - vim
