@@ -48,7 +48,10 @@ Download [fritzing file(.fzz)](air-conditioner.fzz)
 
 ## 라즈비안 설치 without monitor & keyboard
 - [SD Card Formatter](https://www.sdcard.org/downloads/formatter_4/) 받아서 SD카드 포맷
-- https://www.raspberrypi.org/downloads/raspbian/ 에서 이미지 받고 압축 풀어서 .img 파일을 실행시키면 boot volume이 마운트된다
+- https://www.raspberrypi.org/downloads/raspbian/ 에서 lite version 이미지 받고 압축 풀어서 .img 파일을 실행시키면 boot volume이 마운트된다
+  - http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip 사용 필요
+  - 최신 os인 stretch에서는 samsung-ac의 irsend 동작이 됐다 안됐다 불안정하고 lg-ac에서는 간헐적으로 "irsend: timeout" 발생하는 문제가 있어 해결 될 때 까지 jessie사용 필요. 2018년 6월 12일 현재까지 문제 해결되어 있지 않음.
+  - https://www.raspberrypi.org/forums/viewtopic.php?t=200865
 - 기본으로 ssh가 꺼져 있기 때문에 켜기 위해서 아래처럼 파일을 생성해준다
 ```bash
 sudo touch /Volumes/boot/ssh
@@ -218,6 +221,8 @@ docker image에 ntp 설치해서 해결
 - [Setting up LIRC on the RaspberryPi](http://alexba.in/blog/2013/01/06/setting-up-lirc-on-the-raspberrypi/)
 - [라즈베리파이로 에어컨 제어하기](http://pickykang.tistory.com/37)
 - [버섯돌이의 허큘렉스 다루기 - IR 입문(2.LIRC 설정및 테스트)](http://www.icbanq.com/pbloger/board_View.aspx?number=657)
+- [lirc 0.9.4c 기준 설정파일](https://github.com/mtraver/rpi-ir-remote)
+  - 기존 lirc 설정 문서들은 0.9.0 기준이라 안맞다. 이 링크를 확인하자.
 
 ## 납땜 준비
 - [납땜 기초 알아보기](https://kocoafab.cc/tutorial/view/512)
@@ -238,12 +243,6 @@ docker image에 ntp 설치해서 해결
 
 # Memo
 - https://pinout.xyz/ -> P01 == GPIO01 == BCM 01
-- 같은 네트웍에 여러 라즈베리파이 띄우면 호스트네임 충돌로 네트워크가 잘 안잡히는 것 같다
-sudo vi /etc/hostname
-sudo vi /etc/hosts
-raspberrypi 부분을 다른 hostname으로 바꾸자 
-sudo reboot
-
 
 sudo mode2 -m -d /dev/lirc0
 https://codebender.cc/library/Souliss#extras%2FSamsungMH026FB.cpp
