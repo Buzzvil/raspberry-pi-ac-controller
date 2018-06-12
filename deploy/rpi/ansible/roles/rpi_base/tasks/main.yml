@@ -9,3 +9,27 @@
   with_items:
     - ntp
     - vim
+
+- name: change password
+  become: yes
+  user: name={{ user_name }} password={{ user_password }} update_password=always
+
+- name: change hostname to myserver
+  become: yes
+  hostname:
+    name: "{{ HOSTNAME }}"
+
+- name: add myself to /etc/hosts
+  become: yes
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^127\.0\.0\.1[ \t]+localhost'
+    line: '127.0.0.1 localhost {{ HOSTNAME }}'
+    state: present
+
+- name: Deploy authorized_keys to host
+  authorized_key:
+    key: "{{ lookup('file', 'authorized_keys') }}"
+    manage_dir: yes
+    state: present
+    user: "{{ user_name }}"
