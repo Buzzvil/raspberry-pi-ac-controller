@@ -5,10 +5,10 @@
 
   roles:
   - {
-      role: rpi_base
-      user_name: "pi"
-      user_password: ""
-      HOSTNAME: ""
+      role: rpi_base,
+      user_name: "pi",
+      user_password: "",
+      HOSTNAME: "",
     }
   - {role: ir, gpio_in_pin: 15, gpio_out_pin: 14}
   - {role: photo_sensor}
